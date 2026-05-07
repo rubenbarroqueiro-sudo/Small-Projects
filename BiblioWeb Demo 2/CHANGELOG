@@ -1,0 +1,231 @@
+# CHANGELOG
+
+All notable changes from BiblioWeb Demo 1 to BiblioWeb Demo 2 are documented in this file.
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+---
+
+## [2.0.0] — 2026-05-07
+
+### ✨ Overview
+Complete visual and structural overhaul of the BiblioWeb interface.
+This release focuses on a premium, marketing-ready design while
+preserving all existing functional logic.
+
+---
+
+### 🎨 Visual & Design
+
+- **New color palette** — replaced teal/green (`#01696f`) with a
+  modern indigo/violet accent (`#7c6dfa`), significantly improving
+  visual appeal and brand identity
+- **Typography upgrade** — switched to `Plus Jakarta Sans` for body
+  text (cleaner, more contemporary) and `Playfair Display` for
+  headings (editorial, premium feel)
+- **Glassmorphism topbar** — applied `backdrop-filter: blur(20px)`
+  with semi-transparent background for a frosted-glass navigation bar
+- **Dark mode refinement** — deeper, richer dark background (`#0a0a0f`)
+  with layered surface colors for better depth and contrast
+- **Light mode** — fully redesigned light theme with cooler neutral tones
+
+---
+
+### 📚 Catalog Page
+
+- **Hero banner** — added a prominent welcome section with a real-time
+  counter of currently available books
+- **Genre filter pills** — added horizontal scrollable pill buttons to
+  filter books by genre (Fantasy, Dystopia, Classic, Sci-Fi, etc.)
+- **Dynamic book covers** — each book card now renders a unique
+  gradient cover displaying title and author directly, replacing the
+  previous generic icon placeholder
+- **Cover badge overlay** — availability status badge (`Available` /
+  `Unavailable`) is now overlaid directly on the book cover
+
+---
+
+### 🧩 UI Components
+
+- **Tab switcher redesign** — replaced underline-style tabs with a
+  modern pill-switcher style (segmented control), consistent across
+  History and Admin panels
+- **Admin stat cards** — redesigned with colored icon blocks per
+  category (amber for pending, blue for active, green for returned,
+  violet for total)
+- **Contextual modal icons** — each modal now opens with a matching
+  icon and color (green for "mark as read", red for "cancel", violet
+  for requests)
+- **Toast animations** — improved entrance/exit animation using
+  scale + translate for a more polished feel
+- **Compact cancel button** — the cancel action in book cards is now
+  an icon-only button, reducing visual clutter next to the status badge
+- **Modal backdrop** — added `backdrop-filter: blur(6px)` to modal
+  overlays for a more immersive focus effect
+- **Keyboard & click-outside support** — modals now close on `Escape`
+  key press or click outside the modal box
+
+---
+
+### 📖 Book Catalog Data
+
+- **Expanded catalog** — added 12 new books, bringing the total
+  from 12 to **24 entries**:
+  - *Sapiens* — Yuval Noah Harari
+  - *O Código Da Vinci* — Dan Brown
+  - *A Arte da Guerra* — Sun Tzu
+  - *O Pequeno Príncipe* — Antoine de Saint-Exupéry
+  - *Fahrenheit 451* — Ray Bradbury
+  - *O Hobbit* — J.R.R. Tolkien
+  - *Neuromancer* — William Gibson
+  - *Persuasão* — Jane Austen
+  - *Moby Dick* — Herman Melville
+  - *A Revolução dos Bichos* — George Orwell
+  - *O Senhor das Moscas* — William Golding
+  - *Fundação* — Isaac Asimov
+
+---
+
+### 👤 Identity
+
+- **Username updated** — placeholder `"Denki Krall"` replaced with
+  `"Administrador"` and initials changed from `DK` to `AD`
+
+---
+
+### 🐛 Fixed
+
+- Removed empty CSS ruleset `.stat-body {}` that triggered
+  `css(emptyRules)` linter warning in VSCode (line 473)
+
+---
+
+### 🔒 Unchanged (Functional Logic Preserved)
+
+- Book requisition flow (request → pending → active → returned)
+- Requisition cancellation by user
+- Admin accept / refuse / mark-as-returned actions
+- "Mark as read" list with persistent session state
+- Search and status filter logic
+- Dark/light theme toggle
+- Toast notification system
+- Modal confirmation dialogs
+- History tab (Requisitions + Already Read)
+
+---
+---
+
+# CHANGELOG (Português)
+
+Todas as alterações relevantes do BiblioWeb Demo 1 ao BiblioWeb Demo 2 estão documentadas aqui.
+Formato baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+---
+
+## [2.0.0] — 2026-05-07
+
+### ✨ Resumo
+Reformulação visual e estrutural completa da interface BiblioWeb.
+Esta versão foca-se num design premium e orientado para marketing,
+mantendo toda a lógica funcional existente intacta.
+
+---
+
+### 🎨 Visual e Design
+
+- **Nova paleta de cores** — substituição do verde-teal (`#01696f`) por
+  um acento índigo/violeta moderno (`#7c6dfa`), melhorando
+  significativamente o apelo visual e a identidade da marca
+- **Tipografia atualizada** — adoção de `Plus Jakarta Sans` para texto
+  corrido (mais limpa e contemporânea) e `Playfair Display` para
+  títulos (look editorial e premium)
+- **Topbar com glassmorphism** — aplicação de `backdrop-filter: blur(20px)`
+  com fundo semi-transparente para um efeito de vidro fosco na barra de navegação
+- **Dark mode refinado** — fundo escuro mais profundo e rico (`#0a0a0f`)
+  com camadas de superfície para melhor profundidade e contraste
+- **Light mode** — tema claro completamente redesenhado com tons neutros mais frios
+
+---
+
+### 📚 Página de Catálogo
+
+- **Hero banner** — adicionada secção de boas-vindas com contador
+  em tempo real dos livros atualmente disponíveis
+- **Pills de filtro por género** — botões pills horizontais para
+  filtrar livros por género (Fantasia, Distopia, Clássico, Ficção Científica, etc.)
+- **Capas dinâmicas** — cada card de livro apresenta agora uma capa
+  com gradiente único que exibe título e autor diretamente,
+  substituindo o ícone genérico anterior
+- **Badge sobreposto na capa** — o estado de disponibilidade
+  (`Disponível` / `Indisponível`) está agora sobreposto diretamente na capa do livro
+
+---
+
+### 🧩 Componentes de Interface
+
+- **Tabs redesenhadas** — substituição das abas com sublinhado por
+  um estilo pill-switcher moderno (controlo segmentado), consistente
+  no Histórico e no painel Admin
+- **Stat cards no Admin** — redesenhados com blocos de ícone coloridos
+  por categoria (âmbar para pendentes, azul para em andamento,
+  verde para devolvidos, violeta para total)
+- **Ícones contextuais nos modais** — cada modal abre agora com um
+  ícone e cor correspondentes (verde para "marcar como lido",
+  vermelho para "cancelar", violeta para pedidos)
+- **Animações de toast melhoradas** — animação de entrada/saída com
+  scale + translate para uma sensação mais polida
+- **Botão cancelar compacto** — a ação de cancelamento nos cards
+  passou a ser um botão só com ícone, reduzindo a densidade visual
+  ao lado do badge de estado
+- **Backdrop nos modais** — adição de `backdrop-filter: blur(6px)`
+  nos overlays dos modais para um efeito de foco mais imersivo
+- **Suporte a teclado e clique externo** — os modais fecham agora
+  com a tecla `Escape` ou ao clicar fora da caixa do modal
+
+---
+
+### 📖 Dados do Catálogo
+
+- **Catálogo expandido** — adicionados 12 novos livros, aumentando
+  o total de 12 para **24 entradas**:
+  - *Sapiens* — Yuval Noah Harari
+  - *O Código Da Vinci* — Dan Brown
+  - *A Arte da Guerra* — Sun Tzu
+  - *O Pequeno Príncipe* — Antoine de Saint-Exupéry
+  - *Fahrenheit 451* — Ray Bradbury
+  - *O Hobbit* — J.R.R. Tolkien
+  - *Neuromancer* — William Gibson
+  - *Persuasão* — Jane Austen
+  - *Moby Dick* — Herman Melville
+  - *A Revolução dos Bichos* — George Orwell
+  - *O Senhor das Moscas* — William Golding
+  - *Fundação* — Isaac Asimov
+
+---
+
+### 👤 Identidade
+
+- **Nome de utilizador atualizado** — placeholder `"Denki Krall"` substituído
+  por `"Administrador"` e iniciais alteradas de `DK` para `AD`
+
+---
+
+### 🐛 Correções
+
+- Removida regra CSS vazia `.stat-body {}` que causava o aviso
+  `css(emptyRules)` no linter do VSCode (linha 473)
+
+---
+
+### 🔒 Inalterado (Lógica Funcional Preservada)
+
+- Fluxo de requisição de livros (pedido → pendente → em andamento → devolvido)
+- Cancelamento de requisição pelo utilizador
+- Ações de admin: aceitar / recusar / marcar como devolvido
+- Lista "já lidos" com estado persistente na sessão
+- Lógica de pesquisa e filtro por estado
+- Toggle de tema claro/escuro
+- Sistema de notificações toast
+- Diálogos de confirmação por modal
+- Aba de histórico (Requisições + Já Lidos)
+
+---
