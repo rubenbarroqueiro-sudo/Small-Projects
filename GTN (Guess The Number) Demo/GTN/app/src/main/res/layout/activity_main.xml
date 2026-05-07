@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#F0F4FF">
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🎯 Guess The Number"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#1A237E"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tvMensagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adivinhe o número entre 1 e 100!"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etTentativa"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:hint="O teu número"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnAdivinhar"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="Adivinhar"
+        android:backgroundTint="#3949AB"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvDica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#C62828"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvTentativas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tentativas: 0"
+        android:textSize="15sp"
+        android:textColor="#555555"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnReiniciar"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="Jogar de Novo"
+        android:backgroundTint="#2E7D32"
+        android:textColor="#FFFFFF"
+        android:visibility="gone"/>
+
+</LinearLayout>
