@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AutoStand Premium — Viaturas de Excelência</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #080c10;
+      --dark:    #0d1117;
+      --surface: #161b22;
+      --surface2:#1f2937;
+      --border:  #2d3748;
+      --text:    #f0f6fc;
+      --muted:   #8b949e;
+      --faint:   #484f58;
+      --gold:    #f0b429;
+      --gold2:   #fbbf24;
+      --red:     #e53e3e;
+      --green:   #38a169;
+      --radius:  14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: var(--black);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .topbar-left { display: flex; gap: 20px; }
+    .topbar-item { display: flex; align-items: center; gap: 6px; }
+    .topbar-item span { color: var(--gold); }
+
+    nav {
+      background: rgba(13,17,23,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--gold), #e67e22);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .nav-logo-text {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .nav-logo-text span { color: var(--gold); }
+    .nav-logo-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 1px;
+      font-weight: 400;
+    }
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+    .nav-links a {
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(240,180,41,0.12);
+      color: var(--gold);
+    }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--black) !important;
+      font-weight: 700 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold2) !important; color: var(--black) !important; }
+
+    .page { display: none; }
+    .page.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      position: relative;
+      height: 580px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80') center/cover no-repeat;
+      filter: brightness(0.35);
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1.0); }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(8,12,16,0.95) 0%, rgba(8,12,16,0.5) 60%, transparent 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(240,180,41,0.15);
+      border: 1px solid rgba(240,180,41,0.35);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.05rem;
+      max-width: 500px;
+      line-height: 1.75;
+      margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 14px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 14px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(8,12,16,0.85);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+    }
+    .hero-stat {
+      padding: 20px 56px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat .val { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
+    .hero-stat .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+    .section {
+      max-width: 1200px;
+      margin: 72px auto;
+      padding: 0 48px;
+    }
+    .section-header { margin-bottom: 36px; }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(240,180,41,0.1);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .section-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
+
+    .featured-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: sticky;
+      top: 90px;
+    }
+    .sidebar-card-header {
+      background: var(--black);
+      padding: 14px 18px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .sidebar-list { list-style: none; padding: 8px; }
+    .sidebar-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-list li a:hover {
+      background: rgba(240,180,41,0.1);
+      color: var(--gold);
+    }
+    .sidebar-promo {
+      margin: 8px;
+      background: linear-gradient(135deg, #1a1200, #0d1117);
+      border: 1px solid rgba(240,180,41,0.2);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .sidebar-promo p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+    .sidebar-promo strong { color: var(--gold); }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .vehicle-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+      border-color: rgba(240,180,41,0.3);
+    }
+    .vehicle-img-wrap {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: var(--surface2);
+    }
+    .vehicle-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .vehicle-card:hover .vehicle-img-wrap img { transform: scale(1.06); }
+    .vehicle-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .vehicle-badge.used { background: #3b82f6; color: #fff; }
+    .vehicle-badge.hot { background: var(--red); color: #fff; }
+    .vehicle-fav {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 32px; height: 32px;
+      background: rgba(8,12,16,0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.2s;
+    }
+    .vehicle-fav:hover { background: rgba(240,180,41,0.2); }
+    .vehicle-body { padding: 20px; }
+    .vehicle-make {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .vehicle-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .vehicle-specs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .spec-tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .vehicle-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .vehicle-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .vehicle-price {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+    .vehicle-price small {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 400;
+      display: block;
+      margin-top: -2px;
+    }
+    .btn-card {
+      background: rgba(240,180,41,0.1);
+      border: 1px solid rgba(240,180,41,0.3);
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-card:hover { background: var(--gold); color: var(--black); }
+    .btn-card.blue {
+      background: rgba(59,130,246,0.1);
+      border-color: rgba(59,130,246,0.3);
+      color: #60a5fa;
+    }
+    .btn-card.blue:hover { background: #3b82f6; color: #fff; }
+
+    .about-hero {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--black) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 48px;
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+    .about-text { flex: 1; min-width: 280px; }
+    .about-text h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; }
+    .about-text h2 span { color: var(--gold); }
+    .about-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 14px; }
+    .about-image {
+      flex: 1;
+      min-width: 280px;
+      height: 320px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .about-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .value-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .value-card:hover { transform: translateY(-4px); border-color: rgba(240,180,41,0.3); }
+    .value-icon {
+      width: 48px; height: 48px;
+      background: rgba(240,180,41,0.12);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+    .value-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+    .value-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 36px;
+      align-items: start;
+    }
+    .contact-info {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .contact-info-header {
+      background: linear-gradient(135deg, var(--black), var(--surface));
+      padding: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-info-header h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
+    .contact-info-header p { font-size: 0.85rem; color: var(--muted); }
+    .contact-info-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      background: var(--surface2);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .contact-item-icon {
+      width: 36px; height: 36px; min-width: 36px;
+      background: rgba(240,180,41,0.12);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .contact-item-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .contact-item-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+    .contact-map {
+      margin: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--faint);
+    }
+
+    .contact-form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .contact-form-header {
+      background: linear-gradient(135deg, var(--gold), #e67e22);
+      padding: 24px 28px;
+    }
+    .contact-form-header h3 { font-size: 1.1rem; font-weight: 900; color: var(--black); margin-bottom: 4px; }
+    .contact-form-header p { font-size: 0.8rem; color: rgba(0,0,0,0.6); }
+    .form-body { padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(240,180,41,0.12);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--faint); }
+    .form-group textarea { min-height: 110px; resize: vertical; }
+    .form-group select { appearance: none; cursor: pointer; }
+
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 48px;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand h3 { font-size: 1.1rem; font-weight: 900; color: var(--text); margin-bottom: 10px; }
+    .footer-brand h3 span { color: var(--gold); }
+    .footer-brand p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; max-width: 220px; }
+    .footer-col h4 {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.83rem;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--faint);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-bottom span { color: var(--gold); }
+
+    @media (max-width: 1024px) {
+      .featured-layout { grid-template-columns: 1fr; }
+      .sidebar-card { position: static; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .topbar { display: none; }
+      .hero-content { padding: 0 24px; }
+      .hero-stats { display: none; }
+      .hero { height: 480px; }
+      .section { padding: 0 20px; margin: 40px auto; }
+      .about-hero { padding: 40px 20px; flex-direction: column; }
+      .about-image { width: 100%; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 32px 20px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-item"><span>📍</span> Rua das Viaturas, 42 — Coimbra</div>
+      <div class="topbar-item"><span>📞</span> +351 239 000 000</div>
+      <div class="topbar-item"><span>🕘</span> Seg–Sáb: 09h–19h</div>
+    </div>
+    <div class="topbar-item"><span>⭐</span> Avaliação 4.9/5 · 312 reviews</div>
+  </div>
+
+  <nav>
+    <div class="nav-logo" onclick="showPage('inicio')">
+      <div class="nav-logo-icon">🚗</div>
+      <div>
+        <div class="nav-logo-text">Auto<span>Stand</span></div>
+        <div class="nav-logo-sub">Viaturas Premium · Coimbra</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a onclick="showPage('inicio')" id="nav-inicio" class="active">Início</a>
+      <a onclick="showPage('viaturas')" id="nav-viaturas">Viaturas</a>
+      <a onclick="showPage('sobre')" id="nav-sobre">Sobre Nós</a>
+      <a onclick="showPage('contacto')" id="nav-contacto" class="nav-cta">Contacto</a>
+    </div>
+  </nav>
+
+  <div id="page-inicio" class="page active">
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge">🏆 AutoStand Premium · Coimbra</div>
+        <h1>Encontre o Carro<br/>dos seus <span>Sonhos</span></h1>
+        <p class="hero-desc">Qualidade, confiança e os melhores negócios do mercado. As melhores viaturas ao melhor preço, com garantia total.</p>
+        <div class="hero-btns">
+          <button class="btn-gold" onclick="showPage('viaturas')">🔍 Ver Viaturas</button>
+          <button class="btn-outline" onclick="showPage('contacto')">📞 Falar Connosco</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="val">200+</div><div class="lbl">Viaturas em Stock</div></div>
+        <div class="hero-stat"><div class="val">15+</div><div class="lbl">Anos de Experiência</div></div>
+        <div class="hero-stat"><div class="val">4.9★</div><div class="lbl">Avaliação Média</div></div>
+        <div class="hero-stat"><div class="val">100%</div><div class="lbl">Satisfação Garantida</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-tag">⭐ Em Destaque</div>
+        <h2 class="section-title">Viaturas em Destaque</h2>
+        <p class="section-desc">Seleção exclusiva das melhores viaturas disponíveis no nosso stand.</p>
+      </div>
+
+      <div class="featured-layout">
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">Categorias</div>
+          <ul class="sidebar-list">
+            <li><a>🚙 SUV</a></li>
+            <li><a>🚗 Sedan</a></li>
+            <li><a>🏙 Compacto</a></li>
+            <li><a>⚡ Elétrico</a></li>
+            <li><a>🌿 Híbrido</a></li>
+            <li><a>🏎 Crossover</a></li>
+          </ul>
+          <div class="sidebar-promo">
+            <p>🔥 <strong>Financiamento</strong> disponível a partir de <strong>€199/mês</strong> com aprovação imediata.</p>
+            <button class="btn-gold" style="font-size:0.75rem;padding:8px 14px;margin-top:4px" onclick="showPage('contacto')">Saber mais</button>
+          </div>
+        </div>
+
+        <div class="vehicle-grid">
+          <div class="vehicle-card">
+            <div class="vehicle-img-wrap">
+              <img src="https://images.unsplash.com/photo-1611566026373-c6c8da0ea861?w=600&q=80" alt="Peugeot 2008" loading="lazy"/>
+              <span class="vehicle-badge">Novo</span>
+              <div class="vehicle-fav">🤍</div>
+            </div>
+            <div class="vehicle-body">
+              <div class="vehicle-make">Peugeot</div>
+              <div class="vehicle-name">2008 SUV</div>
+              <div class="vehicle-specs">
+                <span class="spec-tag">📅 2023</span>
+                <span class="spec-tag">🛣 15.000 km</span>
+                <span class="spec-tag">⛽ Gasolina</span>
+              </div>
+              <p class="vehicle-desc">Design moderno com tecnologia de ponta e conforto excepcional para toda a família.</p>
+              <div class="vehicle-footer">
+                <div class="vehicle-price">€22.500<small>IVA incluído</small></div>
+                <button class="btn-card">Saber +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="vehicle-card">
+            <div class="vehicle-img-wrap">
+              <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80" alt="Renault Captur" loading="lazy"/>
+              <span class="vehicle-badge">Popular</span>
+              <div class="vehicle-fav">🤍</div>
+            </div>
+            <div class="vehicle-body">
+              <div class="vehicle-make">Renault</div>
+              <div class="vehicle-name">Captur</div>
+              <div class="vehicle-specs">
+                <span class="spec-tag">📅 2023</span>
+                <span class="spec-tag">🛣 12.000 km</span>
+                <span class="spec-tag">⛽ Híbrido</span>
+              </div>
+              <p class="vehicle-desc">Espaçoso e versátil, perfeito para a família e para longas viagens com total conforto.</p>
+              <div class="vehicle-footer">
+                <div class="vehicle-price">€20.900<small>IVA incluído</small></div>
+                <button class="btn-card">Saber +</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="vehicle-card">
+            <div class="vehicle-img-wrap">
+              <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" alt="Nissan Qashqai" loading="lazy"/>
+              <span class="vehicle-badge hot">🔥 Hot</span>
+              <div class="vehicle-fav">🤍</div>
+            </div>
+            <div class="vehicle-body">
+              <div class="vehicle-make">Nissan</div>
+              <div class="vehicle-name">Qashqai</div>
+              <div class="vehicle-specs">
+                <span class="spec-tag">📅 2023</span>
+                <span class="spec-tag">🛣 18.000 km</span>
+                <span class="spec-tag">⛽ Gasolina</span>
+              </div>
+              <p class="vehicle-desc">Elegância e performance num pacote completo, refinado e cheio de equipamento de série.</p>
+              <div class="vehicle-footer">
+                <div class="vehicle-price">€24.800<small>IVA incluído</small></div>
+                <button class="btn-card">Saber +</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:0">
+      <div class="section-header">
+        <div class="section-tag">🚘 Mais Modelos</div>
+        <h2 class="section-title">Outros Modelos Disponíveis</h2>
+        <p class="section-desc">Explore mais opções do nosso catálogo completo.</p>
+      </div>
+      <div class="vehicle-grid">
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=600&q=80" alt="Renault Kadjar" loading="lazy"/>
+            <span class="vehicle-badge used">Usado</span>
+            <div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Renault</div>
+            <div class="vehicle-name">Kadjar</div>
+            <div class="vehicle-specs">
+              <span class="spec-tag">📅 2022</span>
+              <span class="spec-tag">🛣 25.000 km</span>
+              <span class="spec-tag">⛽ Diesel</span>
+            </div>
+            <p class="vehicle-desc">Conforto e tecnologia num SUV compacto ideal para a cidade e arredores.</p>
+            <div class="vehicle-footer">
+              <div class="vehicle-price">€19.500<small>IVA incluído</small></div>
+              <button class="btn-card blue">Ver Detalhes</button>
+            </div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Nissan Juke" loading="lazy"/>
+            <span class="vehicle-badge">Novo</span>
+            <div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Nissan</div>
+            <div class="vehicle-name">Juke</div>
+            <div class="vehicle-specs">
+              <span class="spec-tag">📅 2023</span>
+              <span class="spec-tag">🛣 8.000 km</span>
+              <span class="spec-tag">⛽ Gasolina</span>
+            </div>
+            <p class="vehicle-desc">Design arrojado e moderno com economia de combustível impressionante.</p>
+            <div class="vehicle-footer">
+              <div class="vehicle-price">€21.200<small>IVA incluído</small></div>
+              <button class="btn-card blue">Ver Detalhes</button>
+            </div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80" alt="Peugeot 3008" loading="lazy"/>
+            <span class="vehicle-badge used">Usado</span>
+            <div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Peugeot</div>
+            <div class="vehicle-name">3008 GT</div>
+            <div class="vehicle-specs">
+              <span class="spec-tag">📅 2022</span>
+              <span class="spec-tag">🛣 22.000 km</span>
+              <span class="spec-tag">⛽ Híbrido</span>
+            </div>
+            <p class="vehicle-desc">Premium, espaçoso e com a tecnologia mais recente a bordo. Acabamento de luxo.</p>
+            <div class="vehicle-footer">
+              <div class="vehicle-price">€26.900<small>IVA incluído</small></div>
+              <button class="btn-card blue">Ver Detalhes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="page-viaturas" class="page">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-tag">🚗 Catálogo Completo</div>
+        <h2 class="section-title">Todas as Viaturas</h2>
+        <p class="section-desc">Explore todo o nosso catálogo de viaturas disponíveis para venda imediata.</p>
+      </div>
+      <div class="vehicle-grid">
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1611566026373-c6c8da0ea861?w=600&q=80" alt="Peugeot 2008" loading="lazy"/>
+            <span class="vehicle-badge">Novo</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Peugeot</div><div class="vehicle-name">2008 SUV</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 15.000 km</span><span class="spec-tag">⛽ Gasolina</span></div>
+            <p class="vehicle-desc">Design moderno com tecnologia de ponta e conforto excepcional.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€22.500<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80" alt="Renault Captur" loading="lazy"/>
+            <span class="vehicle-badge">Popular</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Renault</div><div class="vehicle-name">Captur</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 12.000 km</span><span class="spec-tag">⛽ Híbrido</span></div>
+            <p class="vehicle-desc">Espaçoso e versátil, perfeito para a família e viagens.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€20.900<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" alt="Nissan Qashqai" loading="lazy"/>
+            <span class="vehicle-badge hot">🔥 Hot</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Nissan</div><div class="vehicle-name">Qashqai</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 18.000 km</span><span class="spec-tag">⛽ Gasolina</span></div>
+            <p class="vehicle-desc">Elegância e performance num pacote completo e refinado.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€24.800<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=600&q=80" alt="Renault Kadjar" loading="lazy"/>
+            <span class="vehicle-badge used">Usado</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Renault</div><div class="vehicle-name">Kadjar</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2022</span><span class="spec-tag">🛣 25.000 km</span><span class="spec-tag">⛽ Diesel</span></div>
+            <p class="vehicle-desc">Conforto e tecnologia num SUV compacto ideal para cidade.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€19.500<small>IVA incluído</small></div><button class="btn-card blue">Ver Detalhes</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&q=80" alt="Nissan Juke" loading="lazy"/>
+            <span class="vehicle-badge">Novo</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Nissan</div><div class="vehicle-name">Juke</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 8.000 km</span><span class="spec-tag">⛽ Gasolina</span></div>
+            <p class="vehicle-desc">Design arrojado com economia de combustível impressionante.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€21.200<small>IVA incluído</small></div><button class="btn-card blue">Ver Detalhes</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80" alt="Peugeot 3008" loading="lazy"/>
+            <span class="vehicle-badge used">Usado</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Peugeot</div><div class="vehicle-name">3008 GT</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2022</span><span class="spec-tag">🛣 22.000 km</span><span class="spec-tag">⛽ Híbrido</span></div>
+            <p class="vehicle-desc">Premium, espaçoso e com a tecnologia mais recente a bordo.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€26.900<small>IVA incluído</small></div><button class="btn-card blue">Ver Detalhes</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&q=80" alt="Toyota C-HR" loading="lazy"/>
+            <span class="vehicle-badge">Novo</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Toyota</div><div class="vehicle-name">C-HR Hybrid</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 10.000 km</span><span class="spec-tag">🌿 Híbrido</span></div>
+            <p class="vehicle-desc">Design futurista com sistema híbrido eficiente e baixo consumo de combustível.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€25.500<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80" alt="Citroën C5 Aircross" loading="lazy"/>
+            <span class="vehicle-badge used">Usado</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Citroën</div><div class="vehicle-name">C5 Aircross</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2022</span><span class="spec-tag">🛣 20.000 km</span><span class="spec-tag">⛽ Diesel</span></div>
+            <p class="vehicle-desc">Conforto supremo com suspensão única e amplo espaço interior para toda a família.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€23.800<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-img-wrap">
+            <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&q=80" alt="Hyundai Tucson" loading="lazy"/>
+            <span class="vehicle-badge hot">🔥 Hot</span><div class="vehicle-fav">🤍</div>
+          </div>
+          <div class="vehicle-body">
+            <div class="vehicle-make">Hyundai</div><div class="vehicle-name">Tucson</div>
+            <div class="vehicle-specs"><span class="spec-tag">📅 2023</span><span class="spec-tag">🛣 14.000 km</span><span class="spec-tag">🌿 Híbrido</span></div>
+            <p class="vehicle-desc">Tecnologia avançada com design arrojado e garantia de 5 anos incluída.</p>
+            <div class="vehicle-footer"><div class="vehicle-price">€27.200<small>IVA incluído</small></div><button class="btn-card">Saber +</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-sobre" class="page">
+    <div class="about-hero">
+      <div class="about-text">
+        <div class="section-tag" style="margin-bottom:16px">🏢 Quem Somos</div>
+        <h2>O seu parceiro de <span>confiança</span> no automóvel</h2>
+        <p>O AutoStand Premium é o seu parceiro de confiança na compra de viaturas de qualidade em Coimbra. Com mais de 15 anos de experiência no mercado automóvel, oferecemos as melhores soluções para encontrar o carro ideal.</p>
+        <p>Trabalhamos com transparência, profissionalismo e dedicação para garantir a sua total satisfação. O nosso stand conta com mais de 200 viaturas em stock, todas inspecionadas e com garantia.</p>
+        <button class="btn-gold" style="margin-top:24px" onclick="showPage('contacto')">📞 Fale Connosco</button>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&q=80" alt="AutoStand Showroom"/>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <div class="section-tag">💎 Os Nossos Valores</div>
+        <h2 class="section-title">Porque nos escolher?</h2>
+        <p class="section-desc">Comprometidos com a excelência em cada etapa da sua experiência connosco.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🛡️</div><h3>Garantia Total</h3><p>Todas as viaturas têm garantia incluída e são inspecionadas pelo nosso técnico certificado antes da entrega.</p></div>
+        <div class="value-card"><div class="value-icon">💰</div><h3>Melhores Preços</h3><p>Trabalhamos com margens reduzidas para lhe oferecer os preços mais competitivos do mercado em Coimbra.</p></div>
+        <div class="value-card"><div class="value-icon">🤝</div><h3>Transparência</h3><p>Sem letras pequenas nem surpresas. Todo o historial de cada viatura está disponível para consulta.</p></div>
+        <div class="value-card"><div class="value-icon">⚡</div><h3>Financiamento Rápido</h3><p>Aprovação de crédito em menos de 24 horas com as melhores taxas do mercado e sem burocracia.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-contacto" class="page">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-tag">📞 Fale Connosco</div>
+        <h2 class="section-title">Entre em Contacto</h2>
+        <p class="section-desc">Estamos aqui para ajudar. Envie-nos uma mensagem ou visite-nos no stand.</p>
+      </div>
+      <div class="contact-layout">
+        <div>
+          <div class="contact-info">
+            <div class="contact-info-header">
+              <h3>AutoStand Premium</h3>
+              <p>Visite-nos ou entre em contacto</p>
+            </div>
+            <div class="contact-info-body">
+              <div class="contact-item">
+                <div class="contact-item-icon">📍</div>
+                <div><div class="contact-item-label">Morada</div><div class="contact-item-value">Rua das Viaturas, 42 — Coimbra</div></div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">📞</div>
+                <div><div class="contact-item-label">Telefone</div><div class="contact-item-value">+351 239 000 000</div></div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">📧</div>
+                <div><div class="contact-item-label">Email</div><div class="contact-item-value">info@autostandpremium.pt</div></div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-item-icon">🕘</div>
+                <div><div class="contact-item-label">Horário</div><div class="contact-item-value">Seg–Sáb: 09h–19h · Dom: Fechado</div></div>
+              </div>
+            </div>
+            <div class="contact-map">🗺️ Mapa · Coimbra</div>
+          </div>
+        </div>
+        <div class="contact-form-card">
+          <div class="contact-form-header">
+            <h3>Enviar Mensagem</h3>
+            <p>Respondemos em menos de 24 horas</p>
+          </div>
+          <form class="form-body" onsubmit="return false">
+            <div class="form-row">
+              <div class="form-group"><label>Nome *</label><input type="text" placeholder="O seu nome"/></div>
+              <div class="form-group"><label>Email *</label><input type="email" placeholder="email@exemplo.com"/></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Telefone</label><input type="tel" placeholder="+351 000 000 000"/></div>
+              <div class="form-group">
+                <label>Assunto</label>
+                <select>
+                  <option value="">-- Selecione --</option>
+                  <option>Informação sobre viatura</option>
+                  <option>Pedido de test drive</option>
+                  <option>Financiamento</option>
+                  <option>Retoma de viatura</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>Viatura de interesse</label><input type="text" placeholder="Ex: Peugeot 2008 2023"/></div>
+            <div class="form-group"><label>Mensagem *</label><textarea placeholder="Escreva a sua mensagem aqui..."></textarea></div>
+            <button type="submit" class="btn-gold" style="align-self:flex-start">📤 Enviar Mensagem</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Auto<span>Stand</span> Premium</h3>
+        <p>O seu parceiro de confiança na compra de viaturas de qualidade em Coimbra desde 2009.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a onclick="showPage('inicio')">Início</a></li>
+          <li><a onclick="showPage('viaturas')">Viaturas</a></li>
+          <li><a onclick="showPage('sobre')">Sobre Nós</a></li>
+          <li><a onclick="showPage('contacto')">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Categorias</h4>
+        <ul>
+          <li><a>SUV</a></li>
+          <li><a>Sedan</a></li>
+          <li><a>Compacto</a></li>
+          <li><a>Híbrido / Elétrico</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contactos</h4>
+        <ul>
+          <li><a>📞 239 000 000</a></li>
+          <li><a>📧 info@autostandpremium.pt</a></li>
+          <li><a>📍 Coimbra, Portugal</a></li>
+          <li><a>🕘 Seg–Sáb: 09h–19h</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Rúben Silva © 2026 <span>AutoStand Premium</span> · Coimbra · Todos os direitos reservados.</p>
+      <p>Imagens: <span>Unsplash</span></p>
+    </div>
+  </footer>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      const navEl = document.getElementById('nav-' + id);
+      if (navEl) navEl.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
