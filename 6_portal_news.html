@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal de Notícias</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:       #f59e0b;
+      --gold-dark:  #d97706;
+      --gold-pale:  #fffbeb;
+      --gold-border:#fde68a;
+      --brown:      #92400e;
+      --brown-dark: #78350f;
+      --orange:     #ea580c;
+      --bg:         #fafaf9;
+      --white:      #ffffff;
+      --text:       #1c1917;
+      --muted:      #78716c;
+      --faint:      #a8a29e;
+      --border:     #e7e5e4;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #3c1a00 100%);
+      border-bottom: 3px solid var(--gold);
+      padding: 0 40px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px; height: 40px;
+      background: var(--gold);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .brand-name span { color: var(--gold); }
+    .brand-tagline {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 1px;
+    }
+    .header-date {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+    .header-date span { color: var(--gold); font-weight: 700; }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      flex: 1;
+      min-height: 0;
+    }
+
+    aside {
+      background: #1c1917;
+      border-right: 1px solid #292524;
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 70px);
+      position: sticky;
+      top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 20px 20px 12px;
+      border-bottom: 1px solid #292524;
+    }
+    .sidebar-header h2 {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+    }
+    .menu-list {
+      list-style: none;
+      padding: 12px 10px;
+      flex: 1;
+    }
+    .menu-list > li {
+      margin-bottom: 2px;
+    }
+    .menu-list > li > a,
+    .menu-list > li > .menu-parent {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+      width: 100%;
+      border: none;
+      background: none;
+      font-family: 'Inter', sans-serif;
+      text-align: left;
+    }
+    .menu-list > li > a:hover,
+    .menu-list > li > .menu-parent:hover {
+      background: rgba(245,158,11,0.12);
+      color: var(--gold);
+    }
+    .menu-list > li > a.active,
+    .menu-list > li > .menu-parent.active {
+      background: rgba(245,158,11,0.18);
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .menu-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .menu-arrow {
+      margin-left: auto;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.3);
+      transition: transform 0.2s;
+    }
+    .menu-arrow.open { transform: rotate(90deg); }
+
+    .submenu {
+      list-style: none;
+      padding: 4px 0 4px 42px;
+      display: none;
+    }
+    .submenu.open { display: block; }
+    .submenu li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .submenu li a:hover {
+      background: rgba(245,158,11,0.1);
+      color: var(--gold);
+    }
+    .submenu li a.active {
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+    .submenu-dot {
+      width: 5px; height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    .sidebar-promo {
+      margin: 12px 10px;
+      background: linear-gradient(135deg, #3c1a00, #1c1917);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .sidebar-promo p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .sidebar-promo strong { color: var(--gold); }
+    .sidebar-promo a {
+      background: var(--gold);
+      color: var(--brown-dark);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .breadcrumb {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--faint);
+    }
+    .breadcrumb span { color: var(--text); font-weight: 600; }
+    .breadcrumb-sep { color: var(--border); }
+
+    .panel { display: none; padding: 36px 40px; animation: fadeIn 0.25s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-panel {
+      background: linear-gradient(135deg, #1c1917, #3c1a00);
+      border-radius: 20px;
+      padding: 48px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-panel::after {
+      content: '📰';
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 6rem;
+      opacity: 0.08;
+    }
+    .hero-panel .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245,158,11,0.2);
+      border: 1px solid rgba(245,158,11,0.35);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .hero-panel h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .hero-panel h1 span { color: var(--gold); }
+    .hero-panel p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+      cursor: default;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(245,158,11,0.1); }
+    .card-icon-wrap {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+    .card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 6px; }
+    .card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .card-link:hover { color: var(--orange); }
+
+    .news-header {
+      margin-bottom: 28px;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold-pale);
+      color: var(--gold-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+    .section-label.brown { background: #fef3c7; color: var(--brown); }
+    .section-title-h2 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .section-desc {
+      font-size: 0.87rem;
+      color: var(--muted);
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 32px 0 20px;
+    }
+    .section-divider h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .news-list { display: flex; flex-direction: column; gap: 14px; }
+    .news-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .news-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateX(2px); }
+    .news-item-icon {
+      width: 46px; height: 46px; min-width: 46px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .news-item-body {}
+    .news-item-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+    }
+    .news-item h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+    .news-item p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .news-item-meta { font-size: 0.73rem; color: var(--faint); margin-top: 6px; }
+
+    .destaques-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .destaque-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .destaque-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .destaque-img {
+      height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .destaque-body { padding: 18px 20px; }
+    .destaque-body h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 6px; }
+    .destaque-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .destaque-wide {
+      background: linear-gradient(135deg, #1c1917, #3c1a00);
+      border-radius: 16px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .destaque-wide p { color: rgba(255,255,255,0.6); font-size: 0.87rem; max-width: 400px; line-height: 1.7; }
+    .destaque-wide h3 { font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
+    .destaque-wide h3 span { color: var(--gold); }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--brown-dark);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-gold:hover { background: #fbbf24; }
+
+    footer {
+      background: #1c1917;
+      border-top: 2px solid var(--gold);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+    }
+    footer span { color: var(--gold); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .page-layout { grid-template-columns: 1fr; }
+      aside { position: static; height: auto; min-height: unset; }
+      .destaques-grid { grid-template-columns: 1fr; }
+      .panel { padding: 24px 20px; }
+      header { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <div class="brand-icon">📰</div>
+      <div>
+        <div class="brand-name">Portal <span>News</span></div>
+        <div class="brand-tagline">Informação em tempo real</div>
+      </div>
+    </div>
+    <div class="header-date">
+      <span id="currentDate"></span>
+    </div>
+  </header>
+
+  <div class="page-layout">
+    <aside>
+      <div class="sidebar-header">
+        <h2>📋 Menu</h2>
+      </div>
+      <ul class="menu-list">
+        <li>
+          <a href="#" class="active" data-panel="inicio" onclick="showPanel('inicio', this); return false;">
+            <span class="menu-icon">🏠</span> Início
+          </a>
+        </li>
+        <li>
+          <button class="menu-parent" onclick="toggleSubmenu(this)">
+            <span class="menu-icon">📰</span> Notícias
+            <span class="menu-arrow" id="arrow-noticias">▶</span>
+          </button>
+          <ul class="submenu" id="sub-noticias">
+            <li>
+              <a href="#" data-panel="noticias" data-section="desporto" onclick="showPanel('noticias', this, 'desporto'); return false;">
+                <span class="submenu-dot"></span> Desporto
+              </a>
+            </li>
+            <li>
+              <a href="#" data-panel="noticias" data-section="economia" onclick="showPanel('noticias', this, 'economia'); return false;">
+                <span class="submenu-dot"></span> Economia
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" data-panel="destaques" onclick="showPanel('destaques', this); return false;">
+            <span class="menu-icon">⭐</span> Destaques
+          </a>
+        </li>
+        <li>
+          <a href="http://www.formabase.com" target="_blank">
+            <span class="menu-icon">🔗</span> Formabase
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-promo">
+        <p>🔔 Receba as <strong>últimas notícias</strong> na sua caixa de email!</p>
+        <a href="#">Subscrever</a>
+      </div>
+    </aside>
+
+    <div class="content-area">
+      <div class="breadcrumb" id="breadcrumb">
+        Portal News <span class="breadcrumb-sep">›</span> <span id="bc-current">Início</span>
+      </div>
+
+      <div class="panel active" id="panel-inicio">
+        <div class="hero-panel">
+          <div class="tag">🏠 Página Inicial</div>
+          <h1>Bem-vindo ao <span>Portal News</span></h1>
+          <p>O seu portal de informação diária. Explore as últimas notícias de desporto, economia e muito mais — tudo num só lugar.</p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon-wrap" style="background:#fef3c7">📰</div>
+            <h3>Últimas Notícias</h3>
+            <p>Fique a par de todas as novidades do mundo com cobertura em tempo real.</p>
+            <a class="card-link" onclick="showPanel('noticias', null); return false;">Ver notícias →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon-wrap" style="background:#fdf2f8">⭐</div>
+            <h3>Destaques do Dia</h3>
+            <p>Os temas mais importantes e comentados da atualidade selecionados para si.</p>
+            <a class="card-link" onclick="showPanel('destaques', null); return false;">Ver destaques →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon-wrap" style="background:#f0fdf4">🏆</div>
+            <h3>Desporto</h3>
+            <p>Resultados, classificações e análises do mundo do desporto nacional e internacional.</p>
+            <a class="card-link" onclick="showPanel('noticias', null, 'desporto'); return false;">Ver desporto →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-noticias">
+        <div class="news-header">
+          <div class="section-label">📰 Secção</div>
+          <h2 class="section-title-h2">Notícias</h2>
+          <p class="section-desc">As últimas notícias nacionais e internacionais, atualizadas diariamente.</p>
+        </div>
+
+        <div id="sec-desporto">
+          <div class="section-divider">
+            <h3>🏆 Desporto</h3>
+            <div class="divider-line"></div>
+          </div>
+          <div class="news-list">
+            <div class="news-item">
+              <div class="news-item-icon" style="background:#fef3c7">⚽</div>
+              <div class="news-item-body">
+                <span class="news-item-tag" style="background:#fef3c7;color:#92400e">Futebol</span>
+                <h4>Portugal vence por 3-1 na qualificação europeia</h4>
+                <p>Seleção nacional confirmou a liderança do grupo com uma exibição brilhante e três golos anotados na segunda parte.</p>
+                <div class="news-item-meta">⏱ Há 2 horas · Desporto</div>
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-item-icon" style="background:#f0fdf4">🏀</div>
+              <div class="news-item-body">
+                <span class="news-item-tag" style="background:#f0fdf4;color:#166534">Basquetebol</span>
+                <h4>NBA: Os melhores momentos da noite</h4>
+                <p>Resumo completo de todos os jogos disputados esta noite na liga norte-americana de basquetebol.</p>
+                <div class="news-item-meta">⏱ Há 5 horas · Desporto</div>
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-item-icon" style="background:#eff6ff">🏊</div>
+              <div class="news-item-body">
+                <span class="news-item-tag" style="background:#eff6ff;color:#1e40af">Natação</span>
+                <h4>Nadador português bate recorde nacional nos 200m livres</h4>
+                <p>Atleta da Federação Portuguesa de Natação surpreendeu todos ao bater o recorde nos campeonatos nacionais de piscina coberta.</p>
+                <div class="news-item-meta">⏱ Há 8 horas · Desporto</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="sec-economia">
+          <div class="section-divider">
+            <h3>📈 Economia</h3>
+            <div class="divider-line"></div>
+          </div>
+          <div class="news-list">
+            <div class="news-item">
+              <div class="news-item-icon" style="background:#fef9c3">💶</div>
+              <div class="news-item-body">
+                <span class="news-item-tag" style="background:#fef9c3;color:#854d0e">Finanças</span>
+                <h4>Inflação em Portugal desce para 2,1% em abril</h4>
+                <p>O Instituto Nacional de Estatística revelou hoje que a taxa de inflação continuou a tendência de descida no mês de abril.</p>
+                <div class="news-item-meta">⏱ Há 3 horas · Economia</div>
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-item-icon" style="background:#fdf4ff">🏦</div>
+              <div class="news-item-body">
+                <span class="news-item-tag" style="background:#fdf4ff;color:#6b21a8">Banca</span>
+                <h4>Banco Central Europeu mantém taxas de juro inalteradas</h4>
+                <p>O BCE decidiu não alterar as taxas de juro diretoras na sua reunião mensal, aguardando mais dados sobre a evolução económica.</p>
+                <div class="news-item-meta">⏱ Há 6 horas · Economia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-destaques">
+        <div class="news-header">
+          <div class="section-label brown">⭐ Destaques</div>
+          <h2 class="section-title-h2">Destaques do Dia</h2>
+          <p class="section-desc">Os temas mais relevantes selecionados pela nossa equipa editorial.</p>
+        </div>
+
+        <div class="destaques-grid">
+          <div class="destaque-card">
+            <div class="destaque-img" style="background:linear-gradient(135deg,#1e3a5f,#0a1628)">🌍</div>
+            <div class="destaque-body">
+              <h3>Cimeira Internacional em Lisboa</h3>
+              <p>Líderes de 40 países reúnem-se em Lisboa para debater as alterações climáticas e novas metas de emissões para 2030.</p>
+            </div>
+          </div>
+          <div class="destaque-card">
+            <div class="destaque-img" style="background:linear-gradient(135deg,#1a4731,#0d2b20)">💊</div>
+            <div class="destaque-body">
+              <h3>Novo tratamento contra o cancro aprovado</h3>
+              <p>A Agência Europeia do Medicamento aprovou um novo fármaco inovador com resultados promissores em ensaios clínicos.</p>
+            </div>
+          </div>
+          <div class="destaque-card">
+            <div class="destaque-img" style="background:linear-gradient(135deg,#3c1a00,#1c1917)">🚀</div>
+            <div class="destaque-body">
+              <h3>Missão espacial europeia lançada com sucesso</h3>
+              <p>A ESA lançou com sucesso uma nova sonda em direção a Marte, num projeto conjunto com várias agências internacionais.</p>
+            </div>
+          </div>
+          <div class="destaque-card">
+            <div class="destaque-img" style="background:linear-gradient(135deg,#312e81,#1e1b4b)">🎭</div>
+            <div class="destaque-body">
+              <h3>Festival de Cinema de Lisboa abre inscrições</h3>
+              <p>A edição deste ano promete trazer produções de mais de 50 países, com foco especial em cinema africano e sul-americano.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="destaque-wide">
+          <div>
+            <h3>Fique sempre <span>informado</span></h3>
+            <p>Subscreva a nossa newsletter e receba os destaques mais importantes diretamente no seu email, todos os dias de manhã.</p>
+          </div>
+          <a href="#" class="btn-gold">📧 Subscrever Newsletter</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Rúben Barroqueiro © 2022 <span>Portal News</span> · Todos os direitos reservados · Informação atualizada diariamente</p>
+  </footer>
+  <script>
+
+    const d = new Date();
+    document.getElementById('currentDate').textContent =
+      d.toLocaleDateString('pt-PT', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+
+    function showPanel(panelId, linkEl, section) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + panelId).classList.add('active');
+
+      const labels = { inicio: 'Início', noticias: 'Notícias', destaques: 'Destaques' };
+      document.getElementById('bc-current').textContent = labels[panelId] || panelId;
+
+      document.querySelectorAll('.menu-list a').forEach(a => a.classList.remove('active'));
+      if (linkEl) linkEl.classList.add('active');
+
+      if (section) {
+        setTimeout(() => {
+          const el = document.getElementById('sec-' + section);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+
+        const sub = document.getElementById('sub-noticias');
+        if (sub) { sub.classList.add('open'); }
+        const arrow = document.getElementById('arrow-noticias');
+        if (arrow) arrow.classList.add('open');
+      }
+    }
+
+    function toggleSubmenu(btn) {
+      const sub = btn.nextElementSibling;
+      const arrow = btn.querySelector('.menu-arrow');
+      sub.classList.toggle('open');
+      arrow.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>

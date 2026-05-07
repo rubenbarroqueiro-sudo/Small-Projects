@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horário Semanal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #263348;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --faint: #475569;
+
+      --excel:     #16a34a;
+      --excel-bg:  #052e16;
+      --word:      #2563eb;
+      --word-bg:   #0f172a;
+      --access:    #7c3aed;
+      --access-bg: #1e1b4b;
+      --internet:  #0891b2;
+      --internet-bg: #082f49;
+      --publisher: #db2777;
+      --publisher-bg: #4a044e;
+      --windows:   #d97706;
+      --windows-bg: #1c1500;
+      --outlook:   #dc2626;
+      --outlook-bg: #3b0101;
+      --almoco:    #475569;
+      --almoco-bg: #1e293b;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {}
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.35);
+      color: #a5b4fc;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: #f8fafc;
+      line-height: 1.2;
+    }
+    header h1 span { color: #818cf8; }
+    header p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 6px;
+    }
+    .header-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+    .stat-pill .val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #818cf8;
+    }
+    .stat-pill .lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .legend-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 48px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .legend-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-right: 4px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 48px 60px;
+      overflow-x: auto;
+    }
+
+    .schedule-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead tr th {
+      background: #0f172a;
+      padding: 18px 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+    }
+    thead tr th:first-child {
+      text-align: left;
+      color: var(--faint);
+    }
+    .days-header {
+      background: linear-gradient(135deg, #1e1b4b, #0f172a) !important;
+      color: #a5b4fc !important;
+      font-size: 0.85rem !important;
+      letter-spacing: 3px !important;
+      padding: 14px 20px !important;
+      text-align: center !important;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+    td.time-col {
+      padding: 0 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--faint);
+      white-space: nowrap;
+      text-align: left;
+      background: rgba(0,0,0,0.15);
+      border-right: 1px solid var(--border);
+      min-width: 100px;
+    }
+
+    td.cell {
+      padding: 10px 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .subject-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: default;
+      gap: 4px;
+    }
+    .subject-badge:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .subject-badge .icon { font-size: 1.1rem; }
+
+    .excel-cell    { background: var(--excel-bg);     color: #4ade80; border: 1px solid rgba(22,163,74,0.35); }
+    .word-cell     { background: var(--word-bg);      color: #60a5fa; border: 1px solid rgba(37,99,235,0.35); }
+    .access-cell   { background: var(--access-bg);    color: #c4b5fd; border: 1px solid rgba(124,58,237,0.35); }
+    .internet-cell { background: var(--internet-bg);  color: #38bdf8; border: 1px solid rgba(8,145,178,0.35); }
+    .publisher-cell{ background: var(--publisher-bg); color: #f9a8d4; border: 1px solid rgba(219,39,119,0.35); }
+    .windows-cell  { background: var(--windows-bg);   color: #fbbf24; border: 1px solid rgba(217,119,6,0.35); }
+    .outlook-cell  { background: var(--outlook-bg);   color: #fca5a5; border: 1px solid rgba(220,38,38,0.35); }
+    .almoco-row td {
+      background: rgba(0,0,0,0.25) !important;
+    }
+    .almoco-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(71,85,105,0.3);
+      border: 1px dashed var(--faint);
+      color: var(--faint);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 20px 24px;
+      font-size: 0.8rem;
+      color: var(--faint);
+    }
+
+    @media (max-width: 720px) {
+      header, .legend-bar, main { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <div class="header-tag">📅 Gestão do Tempo</div>
+      <h1>Horário <span>Semanal</span></h1>
+      <p>Planeamento de aulas · Segunda a Sexta-feira</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <div class="val">5</div>
+        <div class="lbl">Dias</div>
+      </div>
+      <div class="stat-pill">
+        <div class="val">7</div>
+        <div class="lbl">Disciplinas</div>
+      </div>
+      <div class="stat-pill">
+        <div class="val">5h</div>
+        <div class="lbl">Por dia</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="legend-bar">
+    <span class="legend-label">Legenda:</span>
+    <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Excel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Word</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c4b5fd"></div>Access</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div>Internet</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f9a8d4"></div>Publisher</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Windows</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fca5a5"></div>Outlook</div>
+  </div>
+
+  <main>
+    <div class="schedule-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="days-header" colspan="5">📆 Dias da Semana</th>
+          </tr>
+          <tr>
+            <th>⏰ Horário</th>
+            <th>2ª Feira</th>
+            <th>3ª Feira</th>
+            <th>4ª Feira</th>
+            <th>5ª Feira</th>
+            <th>6ª Feira</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td class="time-col">9h – 10h</td>
+            <td class="cell" rowspan="2">
+              <div class="subject-badge excel-cell">
+                <span class="icon">📊</span>Excel
+              </div>
+            </td>
+            <td class="cell">
+              <div class="subject-badge word-cell">
+                <span class="icon">📝</span>Word
+              </div>
+            </td>
+            <td class="cell" colspan="2">
+              <div class="subject-badge access-cell">
+                <span class="icon">🗄️</span>Access
+              </div>
+            </td>
+            <td class="cell" rowspan="3">
+              <div class="subject-badge excel-cell">
+                <span class="icon">📊</span>Excel
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time-col">10h – 11h</td>
+            <td class="cell">
+              <div class="subject-badge internet-cell">
+                <span class="icon">🌐</span>Internet
+              </div>
+            </td>
+            <td class="cell" rowspan="2">
+              <div class="subject-badge word-cell">
+                <span class="icon">📝</span>Word
+              </div>
+            </td>
+            <td class="cell" rowspan="2">
+              <div class="subject-badge publisher-cell">
+                <span class="icon">🖨️</span>Publisher
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time-col">11h – 12h</td>
+            <td class="cell">
+              <div class="subject-badge outlook-cell">
+                <span class="icon">📧</span>Outlook
+              </div>
+            </td>
+            <td class="cell">
+              <div class="subject-badge windows-cell">
+                <span class="icon">🪟</span>Windows
+              </div>
+            </td>
+          </tr>
+
+          <tr class="almoco-row">
+            <td class="time-col">12h – 13h</td>
+            <td colspan="5" class="cell">
+              <div class="almoco-badge">🍽️ &nbsp; Almoço</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time-col">13h – 14h</td>
+            <td class="cell" colspan="2">
+              <div class="subject-badge internet-cell">
+                <span class="icon">🌐</span>Internet
+              </div>
+            </td>
+            <td class="cell">
+              <div class="subject-badge windows-cell">
+                <span class="icon">🪟</span>Windows
+              </div>
+            </td>
+            <td class="cell" colspan="2">
+              <div class="subject-badge access-cell">
+                <span class="icon">🗄️</span>Access
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    Horário Semanal · 5 dias · 7 disciplinas · Versão moderna
+  </footer>
+
+</body>
+</html>

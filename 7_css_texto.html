@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guia CSS — Propriedades de Texto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f1117;
+      --surface:  #1a1d27;
+      --surface2: #22263a;
+      --border:   #2e3348;
+      --text:     #e2e8f0;
+      --muted:    #8892a4;
+      --faint:    #4a5568;
+      --blue:     #60a5fa;
+      --purple:   #a78bfa;
+      --green:    #4ade80;
+      --yellow:   #fbbf24;
+      --orange:   #fb923c;
+      --pink:     #f472b6;
+      --red:      #f87171;
+      --radius:   14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1d27, #0f1117);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    header h1 { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    header h1 span { color: var(--blue); }
+    header p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .header-badge {
+      background: rgba(96,165,250,0.12);
+      border: 1px solid rgba(96,165,250,0.3);
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      letter-spacing: 1px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px;
+      gap: 36px;
+      align-items: start;
+    }
+
+    nav {
+      position: sticky;
+      top: 98px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .nav-header {
+      padding: 12px 16px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .nav-list { list-style: none; padding: 8px; }
+    .nav-list li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-list li a:hover { background: var(--surface2); color: var(--text); }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    main { display: flex; flex-direction: column; gap: 32px; }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .section-card-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .section-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .section-card-header h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .section-card-header p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .section-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 10px; }
+
+    .demo-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s;
+    }
+    .demo-row:hover { border-color: var(--faint); }
+    .demo-text { font-size: 1rem; }
+    .code-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.3);
+      color: var(--muted);
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .color-chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: transform 0.15s;
+    }
+    .color-chip:hover { transform: scale(1.02); }
+    .color-swatch {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      min-width: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .color-chip-info {}
+    .color-chip-name { font-size: 0.82rem; font-weight: 600; }
+    .color-chip-code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .size-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .size-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      border-radius: 100px;
+      min-width: 4px;
+    }
+    .size-label { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+    .size-text { margin-left: auto; }
+
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      color: var(--faint);
+    }
+    footer span { color: var(--blue); }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: static; }
+      header { padding: 20px; }
+      .color-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-icon">🎨</div>
+    <div>
+      <h1>CSS <span>Texto</span> — Guia de Referência</h1>
+      <p>Cores · Tamanhos · Peso · Itálico · Efeitos Especiais</p>
+    </div>
+  </div>
+  <div class="header-badge">📖 Referência CSS</div>
+</header>
+
+<div class="layout">
+  <nav>
+    <div class="nav-header">Secções</div>
+    <ul class="nav-list">
+      <li><a href="#cores"><div class="nav-dot" style="background:#f87171"></div>Cores do Texto</a></li>
+      <li><a href="#ems"><div class="nav-dot" style="background:#60a5fa"></div>Tamanho em ems</a></li>
+      <li><a href="#pixels"><div class="nav-dot" style="background:#4ade80"></div>Tamanho em pixels</a></li>
+      <li><a href="#keywords"><div class="nav-dot" style="background:#fbbf24"></div>Palavras-chave</a></li>
+      <li><a href="#percent"><div class="nav-dot" style="background:#fb923c"></div>Percentagem</a></li>
+      <li><a href="#italico"><div class="nav-dot" style="background:#a78bfa"></div>Itálico</a></li>
+      <li><a href="#peso"><div class="nav-dot" style="background:#f472b6"></div>Peso (font-weight)</a></li>
+      <li><a href="#efeitos"><div class="nav-dot" style="background:#34d399"></div>Efeitos Especiais</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="section-card" id="cores">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(248,113,113,0.15)">🎨</div>
+        <div>
+          <h2>Cores do Texto</h2>
+          <p>color: #hex / color: nome</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="color-grid">
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#ff0000"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#ff6b6b">Vermelho</div>
+              <div class="color-chip-code">#FF0000 (hex)</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:red"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#ff6b6b">Vermelho</div>
+              <div class="color-chip-code">color: red (nome)</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:#0000ff"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#60a5fa">Azul</div>
+              <div class="color-chip-code">#0000FF (hex)</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:blue"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#60a5fa">Azul</div>
+              <div class="color-chip-code">color: blue (nome)</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:yellow"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#fbbf24">Amarelo</div>
+              <div class="color-chip-code">color: yellow</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:orange"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#fb923c">Laranja</div>
+              <div class="color-chip-code">color: orange</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background:green"></div>
+            <div class="color-chip-info">
+              <div class="color-chip-name" style="color:#4ade80">Verde</div>
+              <div class="color-chip-code">color: green</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="ems">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(96,165,250,0.15)">📏</div>
+        <div>
+          <h2>Tamanho em <strong style="color:var(--blue)">ems</strong></h2>
+          <p>font-size: em — relativo ao elemento pai</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:0.3125em;color:var(--muted)">Com 5 pontos (5pt ≈ 0.31em)</span>
+          <span class="code-tag">font-size: 5pt</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:0.75em">Com 12 pontos (12pt ≈ 0.75em)</span>
+          <span class="code-tag">font-size: 12pt</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:1.25em">Com 20 pontos (20pt ≈ 1.25em)</span>
+          <span class="code-tag">font-size: 20pt</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:1em">Com 1 em</span>
+          <span class="code-tag">font-size: 1em</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:1.5em">Com 1.5 ems</span>
+          <span class="code-tag">font-size: 1.5em</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--blue)">
+          <span class="demo-text" style="font-size:2em">Com 3 ems (2 × 1.5)</span>
+          <span class="code-tag">font-size: 2em (filho)</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--blue)">
+          <span class="demo-text" style="font-size:0.5em">Com 0.75 ems (0.5 × 1.5)</span>
+          <span class="code-tag">font-size: 0.5em (filho)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="pixels">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(74,222,128,0.15)">🔢</div>
+        <div>
+          <h2>Tamanho em <strong style="color:var(--green)">pixels</strong></h2>
+          <p>font-size: px — valor absoluto</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row">
+          <div class="size-bar" style="width:160px"></div>
+          <span class="demo-text size-text" style="font-size:40px">40px</span>
+          <span class="code-tag">font-size: 40px</span>
+        </div>
+        <div class="demo-row">
+          <div class="size-bar" style="width:80px"></div>
+          <span class="demo-text size-text" style="font-size:20px">20px</span>
+          <span class="code-tag">font-size: 20px</span>
+        </div>
+        <div class="demo-row">
+          <div class="size-bar" style="width:44px"></div>
+          <span class="demo-text size-text" style="font-size:11px">11px</span>
+          <span class="code-tag">font-size: 11px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="keywords">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(251,191,36,0.15)">🔑</div>
+        <div>
+          <h2>Tamanho com <strong style="color:var(--yellow)">palavras-chave</strong></h2>
+          <p>font-size: xx-small | x-small | small | medium | large | x-large | xx-large</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row"><span class="demo-text" style="font-size:xx-small">xx-small</span><span class="code-tag">xx-small</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:x-small">x-small</span><span class="code-tag">x-small</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:small">small</span><span class="code-tag">small</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:medium">medium</span><span class="code-tag">medium</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:large">large</span><span class="code-tag">large</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:x-large">x-large</span><span class="code-tag">x-large</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-size:xx-large">xx-large</span><span class="code-tag">xx-large</span></div>
+      </div>
+    </div>
+
+    <div class="section-card" id="percent">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(251,146,60,0.15)">💯</div>
+        <div>
+          <h2>Tamanho em <strong style="color:var(--orange)">percentagem</strong></h2>
+          <p>font-size: % — relativo ao pai</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:100%">Com 100%</span>
+          <span class="code-tag">font-size: 100%</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-size:75%">Com 75%</span>
+          <span class="code-tag">font-size: 75%</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--orange)">
+          <span class="demo-text" style="font-size:150%">Com 150% (2 × 75%)</span>
+          <span class="code-tag">font-size: 200% (filho)</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--orange)">
+          <span class="demo-text" style="font-size:37.5%">Com 37.5% (0.5 × 75%)</span>
+          <span class="code-tag">font-size: 50% (filho)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="italico">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(167,139,250,0.15)">✍️</div>
+        <div>
+          <h2>Texto em <strong style="color:var(--purple)">itálico</strong></h2>
+          <p>font-style: italic | oblique | normal</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row">
+          <span class="demo-text" style="font-style:italic">Itálico</span>
+          <span class="code-tag">font-style: italic</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="font-style:oblique">Oblíquo</span>
+          <span class="code-tag">font-style: oblique</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--purple)">
+          <span class="demo-text" style="font-style:oblique">Igual ao anterior (Oblíquo)</span>
+          <span class="code-tag">font-style: oblique</span>
+        </div>
+        <div class="demo-row" style="margin-left:24px;border-left:2px solid var(--purple)">
+          <span class="demo-text" style="font-style:normal">Normal</span>
+          <span class="code-tag">font-style: normal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="peso">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(244,114,182,0.15)">⚖️</div>
+        <div>
+          <h2>Peso do texto <strong style="color:var(--pink)">(font-weight)</strong></h2>
+          <p>font-weight: 100–900 | bold</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row"><span class="demo-text" style="font-weight:100">Peso a 100 — Thin</span><span class="code-tag">font-weight: 100</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-weight:400">Peso a 400 — Regular</span><span class="code-tag">font-weight: 400</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-weight:600">Peso a 600 — SemiBold</span><span class="code-tag">font-weight: 600</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-weight:900">Peso a 900 — Black</span><span class="code-tag">font-weight: 900</span></div>
+        <div class="demo-row"><span class="demo-text" style="font-weight:bold">Negrito — Bold</span><span class="code-tag">font-weight: bold</span></div>
+      </div>
+    </div>
+
+    <div class="section-card" id="efeitos">
+      <div class="section-card-header">
+        <div class="section-icon" style="background:rgba(52,211,153,0.15)">✨</div>
+        <div>
+          <h2>Efeitos <strong style="color:#34d399">Especiais</strong></h2>
+          <p>text-transform · text-decoration · font-variant</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="demo-row">
+          <span class="demo-text" style="font-variant:small-caps">Maiusculas Pequenas</span>
+          <span class="code-tag">font-variant: small-caps</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-transform:uppercase">Maiusculas</span>
+          <span class="code-tag">text-transform: uppercase</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-transform:lowercase">MINUSCULAS</span>
+          <span class="code-tag">text-transform: lowercase</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-transform:capitalize">primeira letra de cada palavra maiuscula</span>
+          <span class="code-tag">text-transform: capitalize</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-decoration:underline">Sublinhado</span>
+          <span class="code-tag">text-decoration: underline</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-decoration:overline">Linha acima do texto</span>
+          <span class="code-tag">text-decoration: overline</span>
+        </div>
+        <div class="demo-row">
+          <span class="demo-text" style="text-decoration:line-through">Rasurado</span>
+          <span class="code-tag">text-decoration: line-through</span>
+        </div>
+        <div class="demo-row">
+          <a href="http://formabase.com" target="_blank" class="demo-text" style="text-decoration:none;color:#34d399">Ligação a formabase.com sem sublinhado</a>
+          <span class="code-tag">text-decoration: none</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>Rúben Barroqueiro © 2022 <span>CSS Texto — Guia de Referência</span> · Exercício de demonstração de propriedades CSS</p>
+</footer>
+</body>
+</html>

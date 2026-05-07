@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pelican Airlines — Voe Connosco</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-dark:  #0a1628;
+      --blue-mid:   #1e3a5f;
+      --blue:       #2563eb;
+      --sky:        #38bdf8;
+      --sky-pale:   #e0f2fe;
+      --sky-border: #bae6fd;
+      --white:      #ffffff;
+      --bg:         #f0f6ff;
+      --border:     #dbeafe;
+      --text:       #1e293b;
+      --muted:      #64748b;
+      --faint:      #94a3b8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, #0e4d7a 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23f0f6ff' d='M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: cover;
+      z-index: 1;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-icon {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      backdrop-filter: blur(8px);
+    }
+    .logo-text h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .logo-text h1 span { color: var(--sky); }
+    .logo-text p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.8rem;
+      margin-top: 3px;
+      font-weight: 400;
+    }
+    .header-taglines {
+      text-align: center;
+    }
+    .header-taglines p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      font-weight: 400;
+    }
+    .header-taglines p strong {
+      color: var(--sky);
+      font-weight: 700;
+    }
+    .header-cta {
+      background: var(--sky);
+      color: var(--blue-dark);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .header-cta:hover { background: #7dd3fc; transform: translateY(-2px); }
+
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 52px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover, nav a.active {
+      background: var(--sky-pale);
+      color: var(--blue);
+    }
+    nav a.active { font-weight: 700; }
+
+    .page-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 36px auto;
+      padding: 0 24px;
+      align-items: start;
+    }
+
+    aside {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: sticky;
+      top: 68px;
+      margin-right: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .sidebar-header {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      color: var(--sky);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 12px 18px;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 8px;
+    }
+    .sidebar-menu li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-menu li a:hover {
+      background: var(--sky-pale);
+      color: var(--blue);
+    }
+    .sidebar-menu li a.active {
+      background: var(--sky-pale);
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .sidebar-menu li a .icon { font-size: 1rem; }
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 6px 12px;
+    }
+    .sidebar-promo {
+      margin: 8px;
+      background: linear-gradient(135deg, var(--blue-dark), #1e3a5f);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .sidebar-promo p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .sidebar-promo strong { color: var(--sky); }
+    .sidebar-promo a {
+      display: inline-block;
+      background: var(--sky);
+      color: var(--blue-dark);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 7px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .sidebar-promo a:hover { background: #7dd3fc; }
+
+    .content { display: flex; flex-direction: column; gap: 20px; }
+
+    .destaques-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(37,99,235,0.12);
+    }
+    .card-img {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+    }
+    .card-img.dest1 { background: linear-gradient(135deg, #0f3460, #16213e); }
+    .card-img.dest2 { background: linear-gradient(135deg, #1a4731, #0d2b20); }
+    .card-body { padding: 18px 20px; }
+    .card-tag {
+      display: inline-block;
+      background: var(--sky-pale);
+      color: var(--blue);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 8px;
+    }
+    .card-body h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .card-body p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-price {
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--blue);
+    }
+    .card-price span {
+      font-size: 0.75rem;
+      color: var(--faint);
+      font-weight: 400;
+    }
+    .card-btn {
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .card-btn:hover { background: #1d4ed8; }
+
+    .card-wide {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      border: none;
+      border-radius: 16px;
+      padding: 32px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 20px rgba(10,22,40,0.25);
+    }
+    .card-wide-text h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .card-wide-text h3 span { color: var(--sky); }
+    .card-wide-text p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      max-width: 420px;
+    }
+    .card-wide-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .wide-badge {
+      background: rgba(56,189,248,0.15);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: #7dd3fc;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+    .card-wide-cta {
+      background: var(--sky);
+      color: var(--blue-dark);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .card-wide-cta:hover { background: #7dd3fc; transform: translateY(-2px); }
+
+    footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      margin-top: 40px;
+    }
+    footer span { color: var(--sky); font-weight: 600; }
+
+    @media (max-width: 860px) {
+      .page-body { grid-template-columns: 1fr; }
+      aside { position: static; margin-right: 0; margin-bottom: 20px; }
+      .header-inner { flex-direction: column; text-align: center; }
+      .destaques-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">🦤</div>
+        <div class="logo-text">
+          <h1>Pelican <span>Airlines</span></h1>
+          <p>Hub Lisboa · 43 destinos · 25 países</p>
+        </div>
+      </div>
+      <div class="header-taglines">
+        <p>Viaje com todo o <strong>conforto</strong>!<br/>
+        Os <strong>melhores preços</strong>, as <strong>melhores condições</strong><br/>
+        <strong>Voe connosco!</strong></p>
+      </div>
+      <a href="marcar_voo.html" class="header-cta">✈️ Marcar Voo</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#" class="active">🏠 Início</a>
+    <a href="#">✈️ Voos</a>
+    <a href="#">🌍 Destinos</a>
+    <a href="#">🧳 Bagagem</a>
+    <a href="#">🎟️ Check-in</a>
+    <a href="#">📞 Contactos</a>
+  </nav>
+
+  <div class="page-body">
+    <aside>
+      <div class="sidebar-header">Menu</div>
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active"><span class="icon">🏠</span> Início</a></li>
+        <li><a href="#"><span class="icon">✈️</span> Reservar Voo</a></li>
+        <li><a href="#"><span class="icon">🌍</span> Destinos</a></li>
+        <li><a href="#"><span class="icon">🔍</span> Pesquisar Voos</a></li>
+        <div class="sidebar-divider"></div>
+        <li><a href="#"><span class="icon">🧳</span> Informações Bagagem</a></li>
+        <li><a href="#"><span class="icon">🎟️</span> Online Check-in</a></li>
+        <li><a href="#"><span class="icon">⭐</span> Programa Fidelidade</a></li>
+        <div class="sidebar-divider"></div>
+        <li><a href="#"><span class="icon">📋</span> A Nossa Missão</a></li>
+        <li><a href="#"><span class="icon">📞</span> Contacte-nos</a></li>
+      </ul>
+      <div class="sidebar-promo">
+        <p>✨ <strong>Promoção Flash!</strong><br/>Voos para Buenos Aires a partir de €399</p>
+        <a href="#">Ver oferta</a>
+      </div>
+    </aside>
+
+    <div class="content">
+      <div class="destaques-grid">
+        <div class="card">
+          <div class="card-img dest1">🗼</div>
+          <div class="card-body">
+            <span class="card-tag">✈️ Destaque</span>
+            <h3>Voos para a América do Sul</h3>
+            <p>Líder europeu para a Argentina. Voos diretos de Lisboa para Buenos Aires, São Paulo e Rio de Janeiro.</p>
+            <div class="card-footer-row">
+              <div class="card-price">€399 <span>/ pessoa</span></div>
+              <a href="#" class="card-btn">Ver voos</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img dest2">🌍</div>
+          <div class="card-body">
+            <span class="card-tag">🌟 Popular</span>
+            <h3>Destinos em África</h3>
+            <p>Ligações regulares para mais de 15 destinos africanos, com escala conveniente em Lisboa.</p>
+            <div class="card-footer-row">
+              <div class="card-price">€299 <span>/ pessoa</span></div>
+              <a href="#" class="card-btn">Ver voos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-wide">
+        <div class="card-wide-text">
+          <h3>O seu hub de viagens em <span>Lisboa</span></h3>
+          <p>Com uma área de 2.300 m² e uma posição privilegiada na encruzilhada entre a Europa e outros continentes, voamos para 43 destinos em 25 países.</p>
+          <div class="card-wide-badges">
+            <span class="wide-badge">🌍 43 Destinos</span>
+            <span class="wide-badge">🏳️ 25 Países</span>
+            <span class="wide-badge">🇵🇹 Hub Lisboa</span>
+            <span class="wide-badge">🥇 Líder Europa → Argentina</span>
+          </div>
+        </div>
+        <a href="marcar_voo.html" class="card-wide-cta">✈️ Marcar Voo Agora</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Rúben Barroqueiro © 2022 <span>Pelican Airlines</span> · Hub em Lisboa, Portugal · Todos os direitos reservados.</p>
+  </footer>
+
+</body>
+</html>

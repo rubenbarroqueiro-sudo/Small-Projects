@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pelican Airlines</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+    }
+
+    nav {
+      background: #0a1628;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      font-size: 2rem;
+    }
+    .logo-text {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+    .logo-text span {
+      color: #38bdf8;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+    }
+    nav ul li a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul li a:hover { color: #38bdf8; }
+    .nav-cta {
+      background: #38bdf8;
+      color: #0a1628 !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: #7dd3fc !important; color: #0a1628 !important; }
+
+    .hero {
+      background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 50%, #0e7490 100%);
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2338bdf8' fill-opacity='0.05' d='M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,170.7C960,171,1056,213,1152,218.7C1248,224,1344,192,1392,176L1440,160L1440,320L0,320Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: cover;
+    }
+    .hero-badge {
+      background: rgba(56,189,248,0.15);
+      border: 1px solid rgba(56,189,248,0.4);
+      color: #38bdf8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.15;
+      max-width: 720px;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: #38bdf8; }
+    .hero p {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: #38bdf8;
+      color: #0a1628;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent;
+      color: #ffffff;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: #38bdf8; color: #38bdf8; transform: translateY(-2px); }
+
+    .stats-bar {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .stat-item {
+      padding: 28px 56px;
+      text-align: center;
+      border-right: 1px solid #e2e8f0;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #0e7490;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+    .section-tag {
+      color: #0e7490;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+    .section-desc {
+      color: #475569;
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .mission-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mission-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(14,116,144,0.12);
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #0e7490, #38bdf8);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .mission-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+    .mission-card p {
+      color: #64748b;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .destinations-wrapper {
+      background: linear-gradient(135deg, #0a1628, #1e3a5f);
+      border-radius: 24px;
+      padding: 60px 48px;
+      margin-top: 80px;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .destinations-text { flex: 1; min-width: 260px; }
+    .destinations-text .section-tag { color: #38bdf8; }
+    .destinations-text .section-title { color: #ffffff; }
+    .destinations-text .section-desc { color: #94a3b8; }
+    .destinations-list {
+      flex: 1;
+      min-width: 260px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .dest-tag {
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.25);
+      color: #7dd3fc;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .dest-tag:hover { background: rgba(56,189,248,0.2); }
+
+    .mission-text-block {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      border-left: 4px solid #38bdf8;
+      margin-top: 48px;
+    }
+    .mission-text-block p {
+      color: #334155;
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+    .mission-text-block p + p { margin-top: 20px; }
+    .mission-text-block strong { color: #0e7490; }
+
+    footer {
+      background: #0a1628;
+      color: #64748b;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.85rem;
+      margin-top: 80px;
+    }
+    footer span { color: #38bdf8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="#">
+      <span class="logo-icon">🦤</span>
+      <span class="logo-text">Pelican <span>Airlines</span></span>
+    </a>
+    <ul>
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Destinos</a></li>
+      <li><a href="#">Frota</a></li>
+      <li><a href="#">Sobre nós</a></li>
+      <li><a href="#" class="nav-cta">Reservar voo</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">✈ Transportadora Europeia Líder</div>
+    <h1>Voamos para onde<br/><span>o mundo te leva</span></h1>
+    <p>Com hub em Lisboa, ligamos Portugal à Europa, África, América do Norte e América do Sul — com conforto, segurança e excelência.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">Explorar destinos</a>
+      <a href="#" class="btn-secondary">Saber mais</a>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">43</div>
+      <div class="stat-label">Destinos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">25</div>
+      <div class="stat-label">Países</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2300m²</div>
+      <div class="stat-label">Hub Lisboa</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">#1</div>
+      <div class="stat-label">Europa → Argentina</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-tag">A nossa missão</div>
+    <h2 class="section-title">Princípios que nos guiam em cada voo</h2>
+    <p class="section-desc">A Pelican Airlines construiu a sua reputação com base em valores sólidos de qualidade, inovação e proximidade com o cliente.</p>
+
+    <div class="mission-grid">
+      <div class="mission-card">
+        <div class="card-icon">🌍</div>
+        <h3>Alcance Global</h3>
+        <p>Voamos para 43 destinos em 25 países, cobrindo África, América do Norte e América do Sul com ligações diretas a partir de Lisboa.</p>
+      </div>
+      <div class="mission-card">
+        <div class="card-icon">⭐</div>
+        <h3>Excelência no Serviço</h3>
+        <p>A satisfação dos nossos clientes é a nossa prioridade estratégica. Cada detalhe da viagem é pensado para superar as suas expectativas.</p>
+      </div>
+      <div class="mission-card">
+        <div class="card-icon">🚀</div>
+        <h3>Inovação Contínua</h3>
+        <p>Procuramos constantemente oferecer as melhores e mais fáceis soluções de viagem, agregando cada vez mais valor ao produto que oferecemos.</p>
+      </div>
+    </div>
+
+    <div class="mission-text-block">
+      <p>Com hub em Lisboa com uma área de <strong>2.300 m²</strong> — plataforma privilegiada de acesso à UE na encruzilhada com outros continentes — a <strong>Pelican Airlines</strong> voa atualmente para <strong>43 destinos</strong> dispersos por <strong>25 países</strong> em África, América do Norte e do Sul.</p>
+      <p>É nessa região que a <strong>Pelican Airlines</strong> se destaca como a transportadora europeia <strong>líder de operação para a Argentina</strong>. Prosseguindo uma orientação estratégica cuja prioridade é a satisfação das expectativas dos clientes, procuramos continuamente proporcionar as melhores e mais fáceis soluções para as suas viagens.</p>
+    </div>
+  </section>
+
+  <section style="margin-top:0">
+    <div class="destinations-wrapper">
+      <div class="destinations-text">
+        <div class="section-tag">Destinos em destaque</div>
+        <h2 class="section-title">De Lisboa para o mundo</h2>
+        <p class="section-desc">Explore os nossos principais destinos através de três continentes, com voos diretos e conexões cómodas.</p>
+        <a href="#" class="btn-primary" style="display:inline-block;margin-top:28px;">Ver todos os destinos</a>
+      </div>
+      <div class="destinations-list">
+        <div class="dest-tag">🇦🇷 Buenos Aires</div>
+        <div class="dest-tag">🇧🇷 São Paulo</div>
+        <div class="dest-tag">🇺🇸 Nova Iorque</div>
+        <div class="dest-tag">🇨🇦 Toronto</div>
+        <div class="dest-tag">🇿🇦 Joanesburgo</div>
+        <div class="dest-tag">🇳🇬 Lagos</div>
+        <div class="dest-tag">🇰🇪 Nairobi</div>
+        <div class="dest-tag">🇲🇦 Casablanca</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Rúben Barroqueiro © 2021 <span>Pelican Airlines</span>. Todos os direitos reservados. Hub em Lisboa, Portugal.</p>
+  </footer>
+
+</body>
+</html>

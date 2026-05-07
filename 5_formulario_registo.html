@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulário de Registo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #f1f5f9;
+      --white:      #ffffff;
+      --blue:       #2563eb;
+      --blue-dark:  #1d4ed8;
+      --blue-pale:  #eff6ff;
+      --blue-border:#bfdbfe;
+      --text:       #0f172a;
+      --muted:      #64748b;
+      --faint:      #94a3b8;
+      --border:     #e2e8f0;
+      --error:      #ef4444;
+      --success:    #22c55e;
+      --radius:     12px;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0a1628, #1e3a5f);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-icon {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    header h1 span { color: #38bdf8; }
+    header p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 48px 24px 64px;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 680px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .form-card-header {
+      background: linear-gradient(135deg, var(--blue), #1e40af);
+      padding: 32px 36px;
+    }
+    .form-card-header .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .form-card-header h2 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .form-card-header p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.87rem;
+    }
+
+    .form-body {
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .form-section {}
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title .icon-wrap {
+      width: 30px; height: 30px;
+      background: var(--blue-pale);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+    }
+    .section-title span {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field-row.single { grid-template-columns: 1fr; }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field label .req { color: var(--error); margin-left: 2px; }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      appearance: none;
+    }
+    .field input::placeholder { color: var(--faint); }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .radio-item, .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+    .radio-item:hover, .checkbox-item:hover {
+      border-color: var(--blue-border);
+      background: var(--blue-pale);
+    }
+    .radio-item input[type="radio"],
+    .checkbox-item input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+    .radio-item label, .checkbox-item label {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .radio-item .flag { font-size: 1.1rem; }
+    .lang-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .select-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      padding: 24px 36px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 13px 28px;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-submit {
+      background: var(--blue);
+      color: #fff;
+      flex: 1;
+      min-width: 140px;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+    }
+    .btn-submit:hover { background: var(--blue-dark); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+    .btn-reset {
+      background: var(--border);
+      color: var(--muted);
+      min-width: 110px;
+    }
+    .btn-reset:hover { background: #cbd5e1; color: var(--text); }
+    .btn-print {
+      background: #f1f5f9;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      min-width: 110px;
+    }
+    .btn-print:hover { background: var(--white); color: var(--text); }
+
+    footer {
+      background: #0a1628;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 18px;
+      font-size: 0.78rem;
+    }
+    footer span { color: #38bdf8; }
+
+    @media (max-width: 600px) {
+      .field-row, .select-row, .lang-grid { grid-template-columns: 1fr; }
+      .form-body, .form-card-header, .form-actions { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-icon">📋</div>
+    <div>
+      <h1>Portal de <span>Registo</span></h1>
+      <p>Preencha os seus dados pessoais e profissionais</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-card">
+      <div class="form-card-header">
+        <div class="badge">📝 Novo Registo</div>
+        <h2>Formulário de Registo</h2>
+        <p>Preencha todos os campos obrigatórios para concluir o seu registo.</p>
+      </div>
+
+      <form name="registro" method="post" action="mailto:o_seu_email@serviço.com">
+        <div class="form-body">
+          <div class="form-section">
+            <div class="section-title">
+              <div class="icon-wrap">👤</div>
+              <span>Dados Pessoais</span>
+            </div>
+
+            <div class="field-row single">
+              <div class="field">
+                <label>Nome Completo <span class="req">*</span></label>
+                <input type="text" name="nome" maxlength="50" placeholder="Primeiro nome e apelido"/>
+              </div>
+            </div>
+
+            <div class="field-row single" style="margin-top:14px">
+              <div class="field">
+                <label>Morada</label>
+                <textarea name="morada" placeholder="Rua, número, andar..."></textarea>
+              </div>
+            </div>
+
+            <div class="field-row" style="margin-top:14px">
+              <div class="field">
+                <label>Código Postal</label>
+                <input type="text" name="cod_postal" placeholder="0000-000"/>
+              </div>
+              <div class="field">
+                <label>Localidade</label>
+                <input type="text" name="localidade" placeholder="Lisboa"/>
+              </div>
+            </div>
+
+            <div class="field-row" style="margin-top:14px">
+              <div class="field">
+                <label>Telefone</label>
+                <input type="tel" name="telefone" placeholder="+351 000 000 000"/>
+              </div>
+              <div class="field">
+                <label>E-mail <span class="req">*</span></label>
+                <input type="email" name="email" placeholder="exemplo@email.com"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">
+              <div class="icon-wrap">🌍</div>
+              <span>Nacionalidade</span>
+            </div>
+            <div class="radio-group">
+              <label class="radio-item">
+                <input type="radio" name="nacionalidade" value="pt" checked/>
+                <span class="flag">🇵🇹</span>
+                <label>Portuguesa</label>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="nacionalidade" value="br"/>
+                <span class="flag">🇧🇷</span>
+                <label>Brasileira</label>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="nacionalidade" value="es"/>
+                <span class="flag">🇪🇸</span>
+                <label>Espanhola</label>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">
+              <div class="icon-wrap">💬</div>
+              <span>Línguas Faladas</span>
+            </div>
+            <div class="lang-grid">
+              <label class="checkbox-item">
+                <input type="checkbox" name="linguas" value="pt" checked/>
+                <label>🇵🇹 Português</label>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="linguas" value="es"/>
+                <label>🇪🇸 Espanhol</label>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="linguas" value="uk"/>
+                <label>🇬🇧 Inglês</label>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="linguas" value="fr"/>
+                <label>🇫🇷 Francês</label>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="linguas" value="de"/>
+                <label>🇩🇪 Alemão</label>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">
+              <div class="icon-wrap">💼</div>
+              <span>Informação Profissional</span>
+            </div>
+            <div class="select-row">
+              <div class="field">
+                <label>Área Profissional</label>
+                <select name="area_prof">
+                  <option value="">-- Escolha uma opção --</option>
+                  <option value="educacao">Educação</option>
+                  <option value="informatica">Informática</option>
+                  <option value="gestao">Gestão</option>
+                  <option value="vendas">Vendas</option>
+                  <option value="rh">Recursos Humanos</option>
+                  <option value="outra">Outra</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Função</label>
+                <select name="funcao">
+                  <option value="direcao">Direção</option>
+                  <option value="gerencia">Gerência</option>
+                  <option value="secretariado">Secretariado</option>
+                  <option value="chrfia">Chefia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" name="enviar" class="btn btn-submit">📤 Enviar Registo</button>
+          <button type="reset" name="limpar" class="btn btn-reset">🗑️ Limpar</button>
+          <button type="button" name="imprimir" class="btn btn-print" onclick="window.print()">🖨️ Imprimir</button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>Rúben Barroqueiro © 2022 <span>Portal de Registo</span> · Todos os dados são tratados com confidencialidade.</p>
+  </footer>
+
+</body>
+</html>

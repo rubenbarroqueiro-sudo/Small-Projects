@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>World Wide Web — Enciclopédia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-pale: #eff6ff;
+      --blue-border: #bfdbfe;
+      --dark: #0f172a;
+      --body: #1e293b;
+      --muted: #64748b;
+      --faint: #94a3b8;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --accent: #7c3aed;
+      --accent-pale: #f5f3ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--body);
+      line-height: 1.7;
+    }
+
+    .topbar {
+      background: var(--blue);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 6px 16px;
+      letter-spacing: 0.5px;
+    }
+    .topbar span { color: #fff; font-weight: 600; }
+
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--blue), var(--accent));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .nav-logo-text {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .nav-logo-text span { color: var(--blue); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul li a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul li a:hover { color: var(--blue); }
+    .nav-badge {
+      background: var(--blue-pale);
+      color: var(--blue);
+      border: 1px solid var(--blue-border);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #1e3a5f 60%, #312e81 100%);
+      padding: 96px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: 'WWW';
+      position: absolute;
+      font-size: 20rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.03);
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -8px;
+    }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37,99,235,0.2);
+      border: 1px solid rgba(59,130,246,0.4);
+      color: #93c5fd;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: #60a5fa; }
+    .hero-sub {
+      font-size: 1rem;
+      color: #7dd3fc;
+      font-weight: 500;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+    .hero-desc {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    .hero-toc {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-toc a {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-toc a:hover { background: rgba(96,165,250,0.2); color: #60a5fa; border-color: rgba(96,165,250,0.4); }
+
+    .quick-facts {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .qf-item {
+      padding: 24px 48px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .qf-item:last-child { border-right: none; }
+    .qf-icon { font-size: 1.4rem; margin-bottom: 4px; }
+    .qf-value {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+    .qf-label {
+      font-size: 0.75rem;
+      color: var(--faint);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 24px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    article {}
+
+    .section-block {
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-pale);
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .section-block h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 20px;
+      line-height: 1.25;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-block h2 .anchor {
+      color: var(--blue-light);
+      margin-left: 8px;
+      font-weight: 400;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      text-decoration: none;
+    }
+    .section-block h2:hover .anchor { opacity: 1; }
+
+    .section-block p {
+      color: var(--body);
+      font-size: 0.97rem;
+      line-height: 1.85;
+      margin-bottom: 18px;
+      font-family: 'Merriweather', serif;
+    }
+    .section-block p em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
+    .section-block p strong {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .infobox {
+      float: right;
+      margin: 0 0 28px 32px;
+      width: 260px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      font-size: 0.85rem;
+    }
+    .infobox-header {
+      background: linear-gradient(135deg, var(--blue), var(--accent));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 10px 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .infobox table { width: 100%; border-collapse: collapse; }
+    .infobox td {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .infobox td:first-child {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 45%;
+    }
+    .infobox td:last-child {
+      color: var(--dark);
+      font-weight: 500;
+    }
+    .infobox tr:last-child td { border-bottom: none; }
+
+    .highlight {
+      background: var(--blue-pale);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .highlight p {
+      font-family: 'Inter', sans-serif !important;
+      color: #1e40af !important;
+      font-size: 0.93rem !important;
+      margin: 0 !important;
+    }
+    .highlight-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+
+    .steps {
+      margin: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      transition: box-shadow 0.2s;
+    }
+    .step:hover { box-shadow: 0 4px 20px rgba(37,99,235,0.1); border-color: var(--blue-border); }
+    .step-num {
+      width: 36px; height: 36px; min-width: 36px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-light));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .step-content h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 0.85rem !important;
+      color: var(--muted) !important;
+      margin: 0 !important;
+      line-height: 1.6 !important;
+    }
+
+    .timeline {
+      margin: 28px 0;
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue), var(--accent));
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -26px;
+      top: 4px;
+      width: 14px; height: 14px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px var(--blue);
+    }
+    .tl-year {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .tl-text {
+      font-family: 'Merriweather', serif;
+      font-size: 0.9rem;
+      color: var(--body);
+      line-height: 1.7;
+    }
+
+    aside {
+      position: sticky;
+      top: 84px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .sidebar-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .sidebar-card-header {
+      background: var(--dark);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 12px 20px;
+    }
+    .sidebar-card-body { padding: 20px; }
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .toc-list li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--body);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .toc-list li a:hover {
+      background: var(--blue-pale);
+      color: var(--blue);
+    }
+    .toc-num {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--faint);
+      width: 18px;
+    }
+    .related-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .related-list li a {
+      color: var(--blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .related-list li a:hover { text-decoration: underline; }
+    .key-term {
+      background: var(--accent-pale);
+      border: 1px solid #ddd6fe;
+      border-radius: 8px;
+      padding: 8px 14px;
+      margin-bottom: 8px;
+    }
+    .key-term-word {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.875rem;
+    }
+    .key-term-def {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    footer {
+      background: var(--dark);
+      color: var(--faint);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.83rem;
+    }
+    footer span { color: #60a5fa; font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .page-wrapper { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .infobox { float: none; width: 100%; margin: 0 0 24px 0; }
+      nav ul { display: none; }
+      .qf-item { padding: 18px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">Artigo enciclopédico · <span>World Wide Web</span> · Tecnologia & Internet</div>
+
+  <nav>
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-icon">🌐</div>
+      <span class="nav-logo-text">Wiki<span>Tech</span></span>
+    </a>
+    <ul>
+      <li><a href="#definicao">Definição</a></li>
+      <li><a href="#historia">História</a></li>
+      <li><a href="#funcionamento">Funcionamento</a></li>
+      <li><a href="#conceitos">Conceitos</a></li>
+    </ul>
+    <span class="nav-badge">📖 Enciclopédia</span>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-chip">🌐 Tecnologia da Internet</div>
+    <h1>World Wide <span>Web</span></h1>
+    <div class="hero-sub">WWW · A Rede de Alcance Mundial</div>
+    <p class="hero-desc">
+      Um sistema global de documentos interligados executados na Internet, criado por Tim Berners-Lee em 1991 — a fundação de toda a web moderna.
+    </p>
+    <div class="hero-toc">
+      <a href="#definicao">📌 Definição</a>
+      <a href="#historia">🕰 História</a>
+      <a href="#funcionamento">⚙️ Funcionamento</a>
+      <a href="#conceitos">💡 Conceitos-chave</a>
+    </div>
+  </div>
+
+  <div class="quick-facts">
+    <div class="qf-item">
+      <div class="qf-icon">👤</div>
+      <div class="qf-value">Tim Berners-Lee</div>
+      <div class="qf-label">Criador</div>
+    </div>
+    <div class="qf-item">
+      <div class="qf-icon">📅</div>
+      <div class="qf-value">6 Ago 1991</div>
+      <div class="qf-label">Data de estreia</div>
+    </div>
+    <div class="qf-item">
+      <div class="qf-icon">🏛</div>
+      <div class="qf-value">CERN, Suíça</div>
+      <div class="qf-label">Origem</div>
+    </div>
+    <div class="qf-item">
+      <div class="qf-icon">🔤</div>
+      <div class="qf-value">WWW</div>
+      <div class="qf-label">Sigla</div>
+    </div>
+    <div class="qf-item">
+      <div class="qf-icon">🖥</div>
+      <div class="qf-value">NeXTcube</div>
+      <div class="qf-label">Primeiro servidor</div>
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+    <article>
+      <div class="section-block" id="definicao">
+        <div class="section-label">📌 Secção 1</div>
+        <h2>O que é a World Wide Web<a class="anchor" href="#definicao">#</a></h2>
+
+        <div class="infobox">
+          <div class="infobox-header">Ficha Técnica</div>
+          <table>
+            <tr><td>Nome completo</td><td>World Wide Web</td></tr>
+            <tr><td>Abreviatura</td><td>WWW / Web</td></tr>
+            <tr><td>Criador</td><td>Tim Berners-Lee</td></tr>
+            <tr><td>Ano</td><td>1989–1991</td></tr>
+            <tr><td>Local</td><td>CERN, Suíça</td></tr>
+            <tr><td>Tecnologia base</td><td>HTTP, HTML, URI</td></tr>
+            <tr><td>Publicado em</td><td>6 Agosto 1991</td></tr>
+          </table>
+        </div>
+
+        <p>A <strong>World Wide Web</strong> — que significa <em>"rede de alcance mundial"</em> em inglês, também conhecida como <strong>Web</strong> e <strong>WWW</strong> — é um sistema de documentos que são interligados e executados na Internet. Os documentos podem estar na forma de vídeos, sons, hipertextos e imagens.</p>
+
+        <p>Para visualizar a informação, pode-se usar um programa de computador chamado <strong>browser</strong> para descarregar informações (chamadas "documentos" ou "páginas") de servidores web (ou "sítios") e mostrá-los no ecrã do utilizador.</p>
+
+        <p>O utilizador pode então seguir as ligações na página para outros documentos ou mesmo enviar informações de volta para o servidor para interagir com ele. O ato de seguir ligações é normalmente chamado de <em>"navegar"</em> ou <em>"surfar"</em> na Web.</p>
+
+        <div class="highlight">
+          <span class="highlight-icon">💡</span>
+          <p><strong>Nota importante:</strong> A <em>Web</em> (substantivo próprio) é diferente de <em>web</em> (substantivo comum), já que a Web engloba toda a Internet. Outras webs existem em redes privadas (restritas) que podem não fazer parte da Internet.</p>
+        </div>
+      </div>
+
+      <div class="section-block" id="historia">
+        <div class="section-label">🕰 Secção 2</div>
+        <h2>História e Origens<a class="anchor" href="#historia">#</a></h2>
+
+        <p>As ideias por trás da Web podem ser identificadas ainda em <strong>1980</strong>, na CERN (Suíça), quando <strong>Tim Berners-Lee</strong> construiu o <em>ENQUIRE</em>. Ainda que diferente da Web atual, o projeto continha algumas das mesmas ideias primordiais, e também algumas ideias da web semântica. O objetivo original era tornar mais fácil a partilha de documentos de pesquisas entre colegas.</p>
+
+        <p>O conceito crucial do <strong>hipertexto</strong> originou-se em projetos da década de 1960, como o projeto Xanadu e o NLS. A ideia revolucionária de Tim foi unir o hipertexto e a Internet. No seu livro <em>Weaving The Web</em>, ele explica que sugeriu repetidamente o casamento das tecnologias para membros de ambas as comunidades, mas como ninguém implementou a sua ideia, decidiu implementá-la por conta própria.</p>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1980 — CERN, Suíça</div>
+            <div class="tl-text">Tim Berners-Lee constrói o <strong>ENQUIRE</strong>, precursor da Web, com o objetivo de facilitar a partilha de documentos de investigação.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Março de 1989</div>
+            <div class="tl-text">Berners-Lee escreve uma <strong>proposta de gestão de informação</strong>, referenciando o ENQUIRE e descrevendo um sistema mais elaborado.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Final de 1990</div>
+            <div class="tl-text">Com a ajuda de <strong>Robert Cailliau</strong>, publica uma proposta formal para a World Wide Web. Um computador <strong>NeXTcube</strong> é usado como primeiro servidor web e para escrever o primeiro navegador, o <em>WorldWideWeb</em>.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">6 de Agosto de 1991</div>
+            <div class="tl-text">Berners-Lee posta um resumo no grupo de notícias <strong>alt.hypertext</strong>. Esta data marca a <em>estreia da Web como serviço publicado na Internet</em>.</div>
+          </div>
+        </div>
+
+        <p>No final de 1990, Berners-Lee já tinha construído todas as ferramentas necessárias para o sistema: o <strong>navegador</strong>, o <strong>servidor</strong> e as primeiras páginas web, que descreviam o próprio projeto. No processo, desenvolveu um sistema de identificação global e único de recursos — o <em>Uniform Resource Identifier (URI)</em>.</p>
+      </div>
+
+      <div class="section-block" id="funcionamento">
+        <div class="section-label">⚙️ Secção 3</div>
+        <h2>Como Funciona<a class="anchor" href="#funcionamento">#</a></h2>
+
+        <p>Visualizar uma página web ou outro recurso disponibilizado normalmente inicia ao digitar uma <strong>URL</strong> no browser ou seguindo (acedendo) uma ligação. O processo envolve várias etapas técnicas que acontecem em frações de segundo.</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>Resolução DNS</h4>
+              <p>A parte da URL referente ao servidor web é separada e transformada num endereço IP através de uma base de dados da Internet chamada <strong>Domain Name System (DNS)</strong>.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>Ligação TCP/IP</h4>
+              <p>O browser estabelece uma <strong>conexão TCP/IP</strong> com o servidor web localizado no endereço IP retornado pelo DNS.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>Pedido HTTP</h4>
+              <p>O browser envia um pedido HTTP ao servidor, que responde com o conteúdo da página (HTML, CSS, imagens, etc.).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h4>Renderização</h4>
+              <p>O browser interpreta e renderiza o conteúdo recebido, apresentando a página ao utilizador de forma visual e interativa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block" id="conceitos">
+        <div class="section-label">💡 Secção 4</div>
+        <h2>Conceitos Fundamentais<a class="anchor" href="#conceitos">#</a></h2>
+
+        <p>A Web assenta em três tecnologias fundamentais desenvolvidas por Tim Berners-Lee: o <strong>URI/URL</strong> (identificador único de recursos), o <strong>HTTP</strong> (protocolo de transferência de hipertexto) e o <strong>HTML</strong> (linguagem de marcação de hipertexto). Juntas, estas tecnologias formam a infraestrutura que permite a qualquer pessoa publicar e aceder a conteúdo na Internet.</p>
+
+        <p>O <em>hipertexto</em> — o conceito central da Web — permite que documentos contenham ligações para outros documentos, criando uma teia interconectada de informação. Esta ideia, inicialmente proposta nos anos 1960, ganhou escala global quando Berners-Lee a uniu ao poder da Internet.</p>
+
+        <div class="highlight">
+          <span class="highlight-icon">🔗</span>
+          <p>A Web não é a mesma coisa que a Internet. A Internet é a infraestrutura de rede física global; a Web é um dos serviços que corre sobre ela, tal como o email ou o FTP.</p>
+        </div>
+      </div>
+
+    </article>
+
+    <aside>
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">📋 Índice</div>
+        <div class="sidebar-card-body">
+          <ul class="toc-list">
+            <li><a href="#definicao"><span class="toc-num">1.</span> Definição</a></li>
+            <li><a href="#historia"><span class="toc-num">2.</span> História e Origens</a></li>
+            <li><a href="#funcionamento"><span class="toc-num">3.</span> Como Funciona</a></li>
+            <li><a href="#conceitos"><span class="toc-num">4.</span> Conceitos Fundamentais</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">🔑 Termos-chave</div>
+        <div class="sidebar-card-body">
+          <div class="key-term">
+            <div class="key-term-word">HTTP</div>
+            <div class="key-term-def">Protocolo de Transferência de Hipertexto</div>
+          </div>
+          <div class="key-term">
+            <div class="key-term-word">HTML</div>
+            <div class="key-term-def">Linguagem de marcação para páginas web</div>
+          </div>
+          <div class="key-term">
+            <div class="key-term-word">URI / URL</div>
+            <div class="key-term-def">Identificador único de recursos na web</div>
+          </div>
+          <div class="key-term">
+            <div class="key-term-word">DNS</div>
+            <div class="key-term-def">Sistema de nomes de domínio</div>
+          </div>
+          <div class="key-term">
+            <div class="key-term-word">Hipertexto</div>
+            <div class="key-term-def">Texto com ligações para outros documentos</div>
+          </div>
+          <div class="key-term">
+            <div class="key-term-word">Browser</div>
+            <div class="key-term-def">Programa para navegar na Web</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">🔗 Ver também</div>
+        <div class="sidebar-card-body">
+          <ul class="related-list">
+            <li><a href="#">→ Internet</a></li>
+            <li><a href="#">→ Tim Berners-Lee</a></li>
+            <li><a href="#">→ Protocolo HTTP</a></li>
+            <li><a href="#">→ HTML e CSS</a></li>
+            <li><a href="#">→ Navegadores Web</a></li>
+            <li><a href="#">→ CERN</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <p>Rúben Barroqueiro © 2021 <span>WikiTech</span> · Artigo: World Wide Web · Conteúdo enciclopédico de livre acesso.</p>
+  </footer>
+
+</body>
+</html>

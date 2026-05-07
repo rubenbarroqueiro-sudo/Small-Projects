@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tabela HTML — Demonstração de Atributos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #f1f5f9;
+      --white:   #ffffff;
+      --border:  #e2e8f0;
+      --text:    #0f172a;
+      --muted:   #64748b;
+      --faint:   #94a3b8;
+      --radius:  16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-bottom: 3px solid #fbbf24;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-icon {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    header h1 { font-size: 1.15rem; font-weight: 900; color: #fff; }
+    header h1 span { color: #fbbf24; }
+    header p { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .badge-yellow { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.3); color: #fbbf24; }
+    .badge-green  { background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); color: #4ade80; }
+    .badge-blue   { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); color: #60a5fa; }
+
+    main {
+      flex: 1;
+      max-width: 1000px;
+      width: 100%;
+      margin: 48px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .intro-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .intro-icon { font-size: 2.5rem; }
+    .intro-card h2 { font-size: 1.05rem; font-weight: 800; margin-bottom: 6px; }
+    .intro-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+
+    .table-wrapper {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .table-wrapper-header {
+      background: #0f172a;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .table-wrapper-header span {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .table-wrapper-header span b { color: #fbbf24; }
+    .dot-row { display: flex; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    .demo-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+      padding: 6px;
+    }
+
+    .demo-table thead th {
+      padding: 20px 24px;
+      font-size: 0.875rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .col1-header {
+      background: #FFCB00;
+      color: #78350f;
+      text-align: left;
+      width: 40%;
+    }
+    .col2-header {
+      background: #FF8100;
+      color: #fff;
+      text-align: right;
+      width: 60%;
+    }
+    .col-tag {
+      position: absolute;
+      bottom: 6px;
+      font-size: 0.65rem;
+      font-family: 'Fira Code', monospace;
+      opacity: 0.6;
+      font-weight: 400;
+    }
+    .col1-header .col-tag { left: 12px; }
+    .col2-header .col-tag { right: 12px; }
+
+    .demo-table tbody td {
+      border-radius: 10px;
+      padding: 0;
+      height: 130px;
+      vertical-align: middle;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .demo-table tbody td:hover {
+      transform: scale(1.01);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+
+    .cell-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 18px;
+      min-height: 130px;
+    }
+    .cell-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .cell-attrs {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .attr-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.62rem;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .r1c1 {
+      background: #fff9e6;
+      border: 2px solid #FF0000;
+    }
+    .r1c1 .cell-inner { align-items: center; justify-content: center; }
+    .r1c1 .cell-label { color: #92400e; }
+    .r1c1 .attr-tag { background: rgba(255,0,0,0.1); color: #dc2626; }
+
+    .r1c2 { background: #e8ffd4; border: 2px solid #22c55e; }
+    .r1c2 .cell-inner { align-items: flex-end; }
+    .r1c2 .cell-label { color: #166534; }
+    .r1c2 .attr-tag { background: rgba(34,197,94,0.15); color: #166534; }
+
+    .r2c1 {
+      background: #dbeafe;
+      border: 2px solid #3b82f6;
+    }
+    .r2c1 .cell-inner { justify-content: flex-end; }
+    .r2c1 .cell-label { color: #1e40af; }
+    .r2c1 .attr-tag { background: rgba(59,130,246,0.15); color: #1d4ed8; }
+
+    .r2c2 {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0e4d7a 50%, #0c4a6e 100%);
+      border: 2px solid #0ea5e9;
+      position: relative;
+    }
+    .r2c2::before {
+      content: '☁️ ☁️ ☁️';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.4rem;
+      opacity: 0.4;
+      letter-spacing: 6px;
+    }
+    .r2c2 .cell-inner { justify-content: flex-start; }
+    .r2c2 .cell-label { color: #e0f2fe; }
+    .r2c2 .attr-tag { background: rgba(14,165,233,0.2); color: #7dd3fc; }
+
+    .r3c1 { background: #fff; border: 2px solid #e2e8f0; }
+    .r3c1 .cell-inner { justify-content: flex-end; align-items: center; }
+    .r3c1 .cell-label { color: #475569; }
+    .r3c1 .attr-tag { background: #f1f5f9; color: #64748b; }
+
+    .r3c2 { background: #fff; border: 2px solid #e2e8f0; }
+    .r3c2 .cell-inner { justify-content: flex-end; align-items: center; }
+    .r3c2 .cell-label { color: #475569; }
+    .r3c2 .attr-tag { background: #f1f5f9; color: #64748b; }
+
+    .legend-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .legend-card h3 {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .legend-swatch {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      min-width: 28px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .legend-text {}
+    .legend-text .prop {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .legend-text .val {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    footer {
+      background: #0f172a;
+      border-top: 2px solid #fbbf24;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+    }
+    footer span { color: #fbbf24; }
+
+    @media (max-width: 600px) {
+      header { padding: 20px; }
+      main { padding: 0 14px; }
+      .intro-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-icon">🗃️</div>
+    <div>
+      <h1>Tabela HTML — <span>Atributos Visuais</span></h1>
+      <p>bgcolor · align · valign · bordercolor · background · cellpadding</p>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-yellow">bgcolor</span>
+    <span class="badge badge-green">align / valign</span>
+    <span class="badge badge-blue">bordercolor</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="intro-card">
+    <div class="intro-icon">📋</div>
+    <div>
+      <h2>Demonstração de Atributos de Tabela HTML</h2>
+      <p>Esta tabela demonstra o uso de atributos como <code style="font-family:'Fira Code',monospace;font-size:0.85em;color:#7c3aed">bgcolor</code>, <code style="font-family:'Fira Code',monospace;font-size:0.85em;color:#7c3aed">align</code>, <code style="font-family:'Fira Code',monospace;font-size:0.85em;color:#7c3aed">valign</code>, <code style="font-family:'Fira Code',monospace;font-size:0.85em;color:#7c3aed">bordercolor</code> e <code style="font-family:'Fira Code',monospace;font-size:0.85em;color:#7c3aed">background</code> em células individuais de uma tabela HTML com 2 colunas e 3 linhas de dados.</p>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table-wrapper-header">
+      <div class="dot-row">
+        <div class="dot" style="background:#ef4444"></div>
+        <div class="dot" style="background:#fbbf24"></div>
+        <div class="dot" style="background:#22c55e"></div>
+      </div>
+      <span><b>&lt;table&gt;</b> border="4" cellpadding="10" cellspacing="10" bgcolor="#FFFF00" width="50%"</span>
+    </div>
+
+    <table class="demo-table">
+      <thead>
+        <tr>
+          <th class="col1-header">
+            Coluna 1
+            <span class="col-tag">bgcolor=#FFCB00 · align=left · width=40%</span>
+          </th>
+          <th class="col2-header">
+            Coluna 2
+            <span class="col-tag">bgcolor=#FF8100 · align=right · width=60%</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="r1c1">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 1 / Coluna 1</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">align: center</span>
+                <span class="attr-tag">bordercolor: #FF0000</span>
+                <span class="attr-tag">height: 150</span>
+              </div>
+            </div>
+          </td>
+          <td class="r1c2">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 1 / Coluna 2</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">valign: middle</span>
+                <span class="attr-tag">align: right</span>
+                <span class="attr-tag">bgcolor: #ACFF00</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="r2c1">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 2 / Coluna 1</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">valign: bottom</span>
+                <span class="attr-tag">bgcolor: #89BFFF</span>
+                <span class="attr-tag">height: 150</span>
+              </div>
+            </div>
+          </td>
+          <td class="r2c2">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 2 / Coluna 2</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">valign: top</span>
+                <span class="attr-tag">background: ceufundo.jpg</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="r3c1">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 3 / Coluna 1</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">bgcolor: #FFFFFF</span>
+                <span class="attr-tag">align: center</span>
+                <span class="attr-tag">valign: bottom</span>
+                <span class="attr-tag">height: 150</span>
+              </div>
+            </div>
+          </td>
+          <td class="r3c2">
+            <div class="cell-inner">
+              <span class="cell-label">Linha 3 / Coluna 2</span>
+              <div class="cell-attrs">
+                <span class="attr-tag">bgcolor: #FFFFFF</span>
+                <span class="attr-tag">align: center</span>
+                <span class="attr-tag">valign: bottom</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="legend-card">
+    <h3>🎨 Cores utilizadas por célula</h3>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#FFCB00"></div>
+        <div class="legend-text">
+          <div class="val">Cabeçalho Col. 1</div>
+          <div class="prop">bgcolor: #FFCB00</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#FF8100"></div>
+        <div class="legend-text">
+          <div class="val">Cabeçalho Col. 2</div>
+          <div class="prop">bgcolor: #FF8100</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#FF0000"></div>
+        <div class="legend-text">
+          <div class="val">Borda L1/C1</div>
+          <div class="prop">bordercolor: #FF0000</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#ACFF00"></div>
+        <div class="legend-text">
+          <div class="val">L1 / Coluna 2</div>
+          <div class="prop">bgcolor: #ACFF00</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#89BFFF"></div>
+        <div class="legend-text">
+          <div class="val">L2 / Coluna 1</div>
+          <div class="prop">bgcolor: #89BFFF</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#FFFFFF;border:1px solid #e2e8f0"></div>
+        <div class="legend-text">
+          <div class="val">Linha 3 (ambas)</div>
+          <div class="prop">bgcolor: #FFFFFF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Rúben Barroqueiro © 2022 <span>Tabela HTML — Atributos Visuais</span> · Exercício de demonstração HTML/CSS</p>
+</footer>
+</body>
+</html>
