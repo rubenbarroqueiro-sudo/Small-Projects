@@ -1,0 +1,45 @@
+:root {
+  --btn-bg-light: #222;
+  --btn-bg-dark : #444;
+  --btn-hover1  : #00ffcc;
+  --btn-hover2  : #009999;
+}
+
+.nav-link {
+  display:inline-block;
+  padding:.6rem 1.2rem;
+  margin:.4rem;
+  border-radius:.3rem;
+  background:linear-gradient(45deg, var(--btn-bg-light), var(--btn-bg-dark));
+  color:#fff;
+  font-weight:bold;
+  text-shadow:0 1px 3px rgba(0,0,0,.5);
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform .2s ease,
+    background .4s ease,
+    box-shadow .2s ease;
+}
+
+.nav-link:hover {
+  transform:translateY(-2px) scale(1.05);
+  background:linear-gradient(45deg, var(--btn-hover1), var(--btn-hover2));
+  box-shadow:0 5px 15px rgba(0,255,204,.4);
+}
+
+.nav-link:active {
+  transform:translateY(0) scale(.98);
+  box-shadow:none;
+}
+
+.ripple {
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.3);
+  transform:scale(0);
+  animation:rippleEffect .5s linear forwards;
+}
+@keyframes rippleEffect{
+  to{transform:scale(4); opacity:0;}
+}

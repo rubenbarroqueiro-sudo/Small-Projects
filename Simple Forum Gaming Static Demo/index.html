@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fórum Gaming - Home</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body, h1,h2,h3,p,a,ul,li,table{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#121212;
+  --accent:#00ffcc;
+  --text:#e0e0e0;
+  --border:#222;
+  --shadow:#0008;
+  --font:'Press Start 2P', cursive;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.4;}
+a{text-decoration:none;color:inherit;}
+
+header{
+  background:linear-gradient(135deg,#111, #222);
+  padding:1rem;
+  border-bottom:2px solid var(--border);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+}
+header h1{font-size:1.6rem;color:var(--accent);margin-right:auto;}
+nav a{
+  font-size:.9rem; 
+  padding:5px 10px;
+  border-radius:4px;
+  background:rgba(255,255,255,.05);
+  transition:background .2s;
+}
+nav a:hover{background:rgba(var(--accent),.3);}
+
+.container{
+  max-width:1100px; 
+  margin:auto; 
+  padding:1rem;
+}
+.search-bar{
+  text-align:right;
+  margin-bottom:.8rem;
+}
+.search-bar input[type="text"]{
+  background:#222;
+  border:none;
+  color:var(--text);
+  padding:.5rem .7rem;
+  border-radius:4px;
+  font-family:var(--font);
+  width:200px;
+}
+.search-bar input::placeholder{color:#777;}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#1e1e1e;
+  box-shadow:0 4px 8px var(--shadow);
+  border-radius:6px;
+}
+th,td{
+  padding:.7rem .9rem;
+  text-align:left;
+}
+th{background:#222;color:var(--accent);font-weight:bold;}
+tbody tr:nth-child(even){background:#2a2a2a;}
+.thread-title a{color:var(--accent);}
+.thread-title a:hover{text-decoration:underline;}
+
+footer{
+  text-align:center;
+  padding:1rem 0;
+  border-top:1px solid var(--border);
+  margin-top:2rem;
+}
+footer p{font-size:.8rem;}
+footer a{color:#777;transition:color .2s;}
+footer a:hover{color:var(--accent);}
+
+@media (max-width:768px){
+  header{flex-direction:column;align-items:center;}
+  header h1{margin-bottom:.5rem;}
+  nav{display:flex;justify-content:center;gap:10px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>FORUM GAMING</h1>
+  <nav>
+    <a href="#" class="nav-link">Home</a>
+    <a href="#" class="nav-link">Categorias</a>
+    <a href="#" class="nav-link">Novo Tópico</a>
+    <a href="#" class="nav-link">Perfil</a>
+    <a href="#" class="nav-link">Sair</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="search-bar">
+    <input type="text" placeholder="🔍 Buscar tópicos...">
+  </div>
+
+  <h2>Tópicos Recentes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Assunto</th>
+        <th>Autor</th>
+        <th>Data</th>
+        <th>Respostas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="thread-title"><a href="#">Como dominar o modo PvP em Fortnite?</a></td>
+        <td>GamerXtreme</td>
+        <td>2024-10-12</td>
+        <td>27</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>&copy; Rúben Barroqueiro 2025 Fórum Gaming. Todos os direitos reservados.</p>
+  <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
+</footer>
+
+<script src="buttons.js"></script>
+
+</body>
+</html>
